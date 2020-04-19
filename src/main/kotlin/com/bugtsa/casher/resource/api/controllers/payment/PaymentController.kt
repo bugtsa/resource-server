@@ -28,14 +28,13 @@ class PaymentController {
             ResponseEntity(paymentService.getLastPage(), HttpStatus.OK)
 
     @GetMapping("$PAYMENT_NAME_METHOD/page/prev")
+    @PreAuthorize(ADMINS_USERS_AUTH)
     fun getPrevPage(): ResponseEntity<List<Payment>> =
             ResponseEntity(paymentService.getPrevPage(), HttpStatus.OK)
 
     @GetMapping("$PAYMENT_NAME_METHOD/user")
     fun getPaymentsByUser(@RequestParam("userId") userId: Int) =
             ResponseEntity(paymentService.getPaymentsByUserId(userId), HttpStatus.OK)
-
-
 
     @RequestMapping("$PAYMENT_NAME_METHOD/{paymentId}")
     fun getPayment(@PathVariable paymentId: Int): ResponseEntity<Payment> =
