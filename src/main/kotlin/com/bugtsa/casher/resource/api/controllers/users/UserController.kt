@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ResourceController {
+class UserController {
 
     @Autowired
     private val userService = UserService()
