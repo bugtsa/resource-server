@@ -14,16 +14,22 @@ class Wallet(walletDto: WalletDto) {
     var desc: String = ""
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "wallet_user", joinColumns = [JoinColumn(name = "wallet_id", referencedColumnName = "id")], inverseJoinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")])
-    private var users: List<User>? = null
+    @JoinTable(name = "walletreference", joinColumns = [JoinColumn(name = "wallet_id", referencedColumnName = "id")], inverseJoinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")])
+    var users: List<User>? = null
 
     init {
         this.name = walletDto.name
         this.desc = walletDto.description
-        walletDto.user?.also { userList ->
+        walletDto.users?.also { userList ->
             this.users = userList.map { userDto ->
                 User(userDto)
             }
+        }
+    }
+
+    companion object {
+        fun WalletEmpty(): Wallet {
+            return Wallet(WalletDto.WalletDtoEmtpy())
         }
     }
 }

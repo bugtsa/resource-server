@@ -23,4 +23,8 @@ class UserService {
             UserDto(userRepository.findById(id).get())
         }
     }
+
+    fun getUser(userId: Int): UserDto {
+        return UserDto(userRepository.findById(userId).get())
+    }
 }

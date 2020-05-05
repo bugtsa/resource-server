@@ -5,10 +5,7 @@ import com.bugtsa.casher.resource.api.models.WalletDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class WalletController {
@@ -30,4 +27,9 @@ class WalletController {
         return ResponseEntity(service.updateWallet(walletDto), HttpStatus.OK)
     }
 
+    @GetMapping("/wallets")
+    fun getWallets(
+            @ModelAttribute("userId") userId: Int) : ResponseEntity<List<WalletDto>> {
+        return ResponseEntity(service.getWallets(userService.getUser(userId)), HttpStatus.OK)
+    }
 }
