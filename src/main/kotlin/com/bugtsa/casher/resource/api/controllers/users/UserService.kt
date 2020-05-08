@@ -2,6 +2,7 @@ package com.bugtsa.casher.resource.api.controllers.users
 
 import com.bugtsa.casher.resource.api.data.entity.User
 import com.bugtsa.casher.resource.api.models.UserDto
+import com.bugtsa.casher.resource.api.models.UserDto.Companion.UserDtoEmpty
 import com.bugtsa.casher.resource.model.CustomPrincipal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,6 +26,17 @@ class UserService {
     }
 
     fun getUser(userId: Int): UserDto {
-        return UserDto(userRepository.findById(userId).get())
+        return userRepository.findById(userId).let { user ->
+            when {
+                user.isPresent -> UserDto(user.get())
+                else -> UserDtoEmpty()
+            }
+        }
+    }
+
+    fun getUser(userName: String): UserDto {
+        return userRepository.findAll().find { user -> user.username == userName }?.let { user ->
+            UserDto(user)
+        } ?: UserDtoEmpty()
     }
 }
