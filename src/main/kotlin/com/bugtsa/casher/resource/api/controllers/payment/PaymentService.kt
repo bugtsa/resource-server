@@ -4,6 +4,8 @@ import com.bugtsa.casher.resource.api.controllers.category.CategoryService
 import com.bugtsa.casher.resource.api.data.entity.Category
 import com.bugtsa.casher.resource.api.data.entity.Payment
 import com.bugtsa.casher.resource.api.data.res.PaymentByDayRes
+import com.bugtsa.casher.resource.api.data.res.PaymentPageRes
+import com.bugtsa.casher.resource.api.data.res.PaymentPageWarningsRes
 import com.bugtsa.casher.resource.api.data.res.PaymentRes
 import com.bugtsa.casher.resource.api.models.CategoryDto
 import com.bugtsa.casher.resource.api.models.PaymentDto
@@ -33,30 +35,6 @@ class PaymentService {
 
     private var pageNumber = 0
 
-    private fun getPaymentsByDay(paymentsList: List<Payment>): List<PaymentByDayRes> {
-        val paymentsMapByDay = hashMapOf<String, MutableList<PaymentDto>>()
-        paymentsList.forEach { payment ->
-            val newPayment = processPaymentDto(payment)
-            if (!paymentsMapByDay.contains(newPayment.date)) {
-                val tempPaymentsList = mutableListOf<PaymentDto>()
-                tempPaymentsList.add(newPayment)
-                paymentsMapByDay[newPayment.date] = tempPaymentsList
-            } else {
-                paymentsMapByDay[newPayment.date]?.also {
-                    it.add(0, newPayment)
-                    paymentsMapByDay[newPayment.date] = it
-                }
-            }
-        }
-        val listPaymentsByDay = mutableListOf<PaymentByDayRes>()
-        getSortedMapPaymentsByDay(paymentsMapByDay).keys.forEach { key ->
-            listPaymentsByDay.add(PaymentByDayRes(listPaymentsByDay.size.toString(), key, null))
-            paymentsMapByDay[key]?.forEach { payment ->
-                listPaymentsByDay.add(PaymentByDayRes(listPaymentsByDay.size.toString(), null, payment))
-            }
-        }
-        return listPaymentsByDay
-    }
 
     fun getSortedMapPaymentsByDay(paymentsByDayMap: HashMap<String, MutableList<PaymentDto>>)
             : SortedMap<String, MutableList<PaymentDto>> = paymentsByDayMap
@@ -69,20 +47,7 @@ class PaymentService {
                 }
             })
 
-    private fun processPaymentDto(payment: Payment): PaymentDto {
-        val rawDate = payment.date
-        return when (rawDate.contains(DATE_AND_TIME_DELIMITER)) {
-            true -> {
-                val index = rawDate.indexOf(DATE_AND_TIME_DELIMITER)
-                val date = rawDate.substring(0, index)
-                val time = rawDate.substring(index + DATE_AND_TIME_DELIMITER.length, rawDate.length)
-                PaymentDto(oldPayment = payment, newDate = date, newTime = time)
-            }
-            false -> PaymentDto(payment = payment)
-        }
-    }
-
-    fun getLastPage(): List<PaymentByDayRes> {
+    fun getLastPage(): PaymentPageRes {
         pageNumber = 0
         val sortedByIdDesc = PageRequest.of(pageNumber, SIZE_PAGE_REQUEST, Sort(Sort.Direction.DESC, ID_NAME_COLUMN))
         val paymentsList = paymentRepository.findAll(sortedByIdDesc).toList()
@@ -159,6 +124,60 @@ class PaymentService {
             lastPayment.id
         } else {
             -1
+        }
+    }
+
+    private fun getPaymentsByDay(paymentsList: List<Payment>): PaymentPageRes {
+        val paymentsPage = (mutableListOf<PaymentPageWarningsRes>() to hashMapOf<String, MutableList<PaymentDto>>())
+                .also { (warningsList, paymentsMapByDay) ->
+                    paymentsList.forEach { payment ->
+                        val newPayment = processPaymentDto(payment)
+                        when {
+                            newPayment.date.isEmpty() -> {
+                                warningsList.add(PaymentPageWarningsRes("Need setup date for payment", newPayment))
+                            }
+                            !paymentsMapByDay.contains(newPayment.date) -> {
+                                val tempPaymentsList = mutableListOf<PaymentDto>()
+                                tempPaymentsList.add(newPayment)
+                                paymentsMapByDay[newPayment.date] = tempPaymentsList
+                            }
+                            else -> {
+                                paymentsMapByDay[newPayment.date]?.also {
+                                    it.add(0, newPayment)
+                                    paymentsMapByDay[newPayment.date] = it
+                                }
+                            }
+                        }
+                    }
+                }
+        return paymentsPage.let { (warningsList, paymentsMapByDay) ->
+            PaymentPageRes(
+                    hasWarning = warningsList.isNotEmpty(),
+                    warningsList = warningsList,
+                    page = mutableListOf<PaymentByDayRes>()
+                            .let { listPaymentsByDay ->
+                                getSortedMapPaymentsByDay(paymentsMapByDay).keys.forEach { key ->
+                                    listPaymentsByDay.add(PaymentByDayRes(listPaymentsByDay.size.toString(), key, null))
+                                    paymentsMapByDay[key]?.forEach { payment ->
+                                        listPaymentsByDay.add(PaymentByDayRes(listPaymentsByDay.size.toString(), null, payment))
+                                    }
+                                }
+                                listPaymentsByDay
+                            }
+            )
+        }
+    }
+
+    private fun processPaymentDto(payment: Payment): PaymentDto {
+        val rawDate = payment.date
+        return when (rawDate.contains(DATE_AND_TIME_DELIMITER)) {
+            true -> {
+                val index = rawDate.indexOf(DATE_AND_TIME_DELIMITER)
+                val date = rawDate.substring(0, index)
+                val time = rawDate.substring(index + DATE_AND_TIME_DELIMITER.length, rawDate.length)
+                PaymentDto(oldPayment = payment, newDate = date, newTime = time)
+            }
+            false -> PaymentDto(payment = payment)
         }
     }
 

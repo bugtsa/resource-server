@@ -57,4 +57,13 @@ class PaymentDto {
         this.categoryId = oldPayment.categoryId
         this.balance = oldPayment.balance
     }
+
+    override fun toString(): String {
+        return "userId: $userId \n" +
+                "cost: $cost \n" +
+                "date: $date \n" +
+                "time: $time \n" +
+                "category: $category \n" +
+                "balance: $balance"
+    }
 }

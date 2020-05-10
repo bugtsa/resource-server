@@ -3,6 +3,7 @@ package com.bugtsa.casher.resource.api.controllers.payment
 import com.bugtsa.casher.resource.api.Constants.Companion.ADMINS_USERS_AUTH
 import com.bugtsa.casher.resource.api.data.entity.Payment
 import com.bugtsa.casher.resource.api.data.res.PaymentByDayRes
+import com.bugtsa.casher.resource.api.data.res.PaymentPageRes
 import com.bugtsa.casher.resource.api.data.res.PaymentRes
 import com.bugtsa.casher.resource.api.models.PaymentDto
 import com.bugtsa.casher.resource.api.models.PaymentFullDto
@@ -24,8 +25,9 @@ class PaymentController {
 
     @GetMapping("$PAYMENT_NAME_METHOD$PAGE_PAYMENT_NAME_METHOD$LAST_PAGE_PAYMENT_NAME_METHOD")
     @PreAuthorize(ADMINS_USERS_AUTH)
-    fun getLastPage(): ResponseEntity<List<PaymentByDayRes>> =
-            ResponseEntity(paymentService.getLastPage(), HttpStatus.OK)
+    fun getLastPage(): ResponseEntity<PaymentPageRes> {
+        return ResponseEntity(paymentService.getLastPage(), HttpStatus.OK)
+    }
 
     @GetMapping("$PAYMENT_NAME_METHOD/page/prev")
     @PreAuthorize(ADMINS_USERS_AUTH)
