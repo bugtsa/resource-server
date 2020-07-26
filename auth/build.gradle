@@ -19,10 +19,10 @@ buildscript {
     }
 }
 
-jar {
-    setArchivesBaseName("casher-auth-service")
-    setVersion("0.0.1")
-}
+//jar {
+//    setArchivesBaseName("casher-auth-service")
+//    setVersion("0.0.1")
+//}
 
 repositories {
     jcenter()
