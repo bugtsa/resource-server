@@ -4,7 +4,6 @@ import com.bugtsa.casher.resource.api.data.entity.Wallet
 import com.bugtsa.casher.resource.api.data.entity.Wallet.Companion.WalletEmpty
 import com.bugtsa.casher.resource.api.models.UserDto
 import com.bugtsa.casher.resource.api.models.WalletDto
-import com.bugtsa.casher.resource.api.models.WalletDto.Companion.WalletDtoEmtpy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
