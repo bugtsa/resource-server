@@ -1,3 +1,2 @@
 rootProject.name = "casher-resource-server"
-include 'auth'
 
