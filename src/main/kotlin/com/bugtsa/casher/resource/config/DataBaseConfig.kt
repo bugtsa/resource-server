@@ -7,10 +7,14 @@ data class DataBaseConfig(
 ) {
 
     companion object {
-        fun createDataBaseConfig() = DataBaseConfig(
-                url = URL_DATABASE,
-                userName = USERNAME_DATABASE,
-                password = PASSWORD_DATABASE
+        fun createDataBaseConfig(
+                url: String,
+                userName: String,
+                password: String
+        ) = DataBaseConfig(
+                url = url,
+                userName = userName,
+                password = password
         )
     }
 }

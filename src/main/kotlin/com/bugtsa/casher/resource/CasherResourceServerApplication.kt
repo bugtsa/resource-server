@@ -16,7 +16,11 @@ fun main(args: Array<String>) {
 }
 
 private fun getProperties(): Properties {
-    val dataBaseConfig = createDataBaseConfig()
+    val dataBaseConfig = createDataBaseConfig(
+            System.getenv("JDBC_DATABASE_URL"),
+            System.getenv("JDBC_DATABASE_URL"),
+            System.getenv("JDBC_DATABASE_URL")
+    )
     return Properties().apply {
         put("spring.datasource.url", dataBaseConfig.url)
         put("spring.datasource.username", dataBaseConfig.userName)
