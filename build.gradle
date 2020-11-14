@@ -60,16 +60,30 @@ dependencies {
 }
 
 task getDatabaseUrl() {
-	def databaseUrl = null
+	def urlDatabase = null
+	def userNameDatabase = null
+	def passwordDatabase = null
+	def emptyString = ""
 	try {
-		databaseUrl = System.getenv("JDBC_DATABASE_URL")
-		println("Success: load databaseUrl: $databaseUrl")
+		urlDatabase = System.getenv("JDBC_DATABASE_URL")
+		userNameDatabase = System.getenv("JDBC_DATABASE_USERNAME")
+		passwordDatabase = System.getenv("JDBC_DATABASE_PASSWORD")
+
 	} catch (Exception ignored) {
 		println("Warning: getenv loading failed")
 	}
-	project.ext.DATABASE_URL =  System.getenv('JDBC_DATABASE_URL') ?: databaseUrl
-	println("Output project var: ${project.ext.DATABASE_URL}")
-	println("Output project version: ${project.ext.version}")
+	if (urlDatabase != null && urlDatabase != emptyString) {
+		project.ext.urlDatabase = urlDatabase ?: emptyString
+		println("url: ${project.ext.urlDatabase}")
+	}
+	if (userNameDatabase != null && userNameDatabase != emptyString) {
+		project.ext.userNameDatabase = userNameDatabase ?: emptyString
+		println("userName: ${project.ext.userNameDatabase}")
+	}
+	if (passwordDatabase != null && passwordDatabase != emptyString) {
+		project.ext.passwordDatabase = passwordDatabase ?: emptyString
+		println("password: ${project.ext.passwordDatabase}")
+	}
 }
 
 bootRun {
