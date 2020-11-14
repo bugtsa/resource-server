@@ -65,9 +65,9 @@ task getDatabaseUrl() {
 	def passwordDatabase = null
 	def emptyString = ""
 	try {
-		urlDatabase = System.getenv("JDBC_DATABASE_URL")
+		urlDatabase = System.getenv("EXT_DATABASE_URL")
 		userNameDatabase = System.getenv("JDBC_DATABASE_USERNAME")
-		passwordDatabase = System.getenv("JDBC_DATABASE_PASSWORD")
+		passwordDatabase = System.getenv("EXT_DATABASE_PASSWORD")
 
 	} catch (Exception ignored) {
 		println("Warning: getenv loading failed")
