@@ -13,16 +13,11 @@ buildscript {
 	}
 }
 
-project.ext {
-	version = "222.0"
-}
-
 apply plugin: 'kotlin'
 apply plugin: "kotlin-spring"
 apply plugin: "kotlin-jpa"
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'application'
 
 jar {
 	setArchivesBaseName("casher-bugtsa-resource-service")
@@ -59,33 +54,33 @@ dependencies {
 	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.2.2'
 }
 
-task getDatabaseUrl() {
-	def urlDatabase = null
-	def userNameDatabase = null
-	def passwordDatabase = null
-	def emptyString = ""
-	try {
-		urlDatabase = System.getenv("EXT_DATABASE_URL")
-		userNameDatabase = System.getenv("JDBC_DATABASE_USERNAME")
-		passwordDatabase = System.getenv("EXT_DATABASE_PASSWORD")
-
-	} catch (Exception ignored) {
-		println("Warning: getenv loading failed")
-	}
-	if (urlDatabase != null && urlDatabase != emptyString) {
-		project.ext.urlDatabase = urlDatabase ?: emptyString
-		println("url: ${project.ext.urlDatabase}")
-	}
-	if (userNameDatabase != null && userNameDatabase != emptyString) {
-		project.ext.userNameDatabase = userNameDatabase ?: emptyString
-		println("userName: ${project.ext.userNameDatabase}")
-	}
-	if (passwordDatabase != null && passwordDatabase != emptyString) {
-		project.ext.passwordDatabase = passwordDatabase ?: emptyString
-		println("password: ${project.ext.passwordDatabase}")
-	}
-}
-
-bootRun {
-	dependsOn(getDatabaseUrl)
-}
+//task getDatabaseUrl() {
+//	def urlDatabase = null
+//	def userNameDatabase = null
+//	def passwordDatabase = null
+//	def emptyString = ""
+//	try {
+//		urlDatabase = System.getenv("EXT_DATABASE_URL")
+//		userNameDatabase = System.getenv("JDBC_DATABASE_USERNAME")
+//		passwordDatabase = System.getenv("EXT_DATABASE_PASSWORD")
+//
+//	} catch (Exception ignored) {
+//		println("Warning: getenv loading failed")
+//	}
+//	if (urlDatabase != null && urlDatabase != emptyString) {
+//		project.ext.urlDatabase = urlDatabase ?: emptyString
+//		println("url: ${project.ext.urlDatabase}")
+//	}
+//	if (userNameDatabase != null && userNameDatabase != emptyString) {
+//		project.ext.userNameDatabase = userNameDatabase ?: emptyString
+//		println("userName: ${project.ext.userNameDatabase}")
+//	}
+//	if (passwordDatabase != null && passwordDatabase != emptyString) {
+//		project.ext.passwordDatabase = passwordDatabase ?: emptyString
+//		println("password: ${project.ext.passwordDatabase}")
+//	}
+//}
+//
+//bootRun {
+//	dependsOn(getDatabaseUrl)
+//}
