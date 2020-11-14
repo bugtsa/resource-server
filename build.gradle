@@ -13,11 +13,17 @@ buildscript {
 	}
 }
 
+project.ext {
+//	JDBC_DATABASE_URL = getDatabaseUrl()
+	version = "222.0"
+}
+
 apply plugin: 'kotlin'
 apply plugin: "kotlin-spring"
 apply plugin: "kotlin-jpa"
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'application'
 
 jar {
 	setArchivesBaseName("casher-bugtsa-resource-service")
@@ -52,4 +58,21 @@ dependencies {
 	compile 'org.hibernate:hibernate-core'
 	compile 'org.hibernate:hibernate-entitymanager'
 	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.2.2'
+}
+
+task getDatabaseUrl() {
+	def databaseUrl = null
+	try {
+		Properties properties = new Properties()
+		properties.load(project.rootProject.file('local.properties')?.newDataInputStream())
+		databaseUrl = properties.getProperty('databaseUrl')
+	} catch (Exception ignored) {
+		println("Warning: local.properties loading failed Sentry SberChat data")
+	}
+	project.ext.DATABASE_URL =  System.getenv('JDBC_DATABASE_URL') ?: databaseUrl
+	version = "33432"
+}
+
+bootRun {
+	dependsOn(getDatabaseUrl)
 }
