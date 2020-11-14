@@ -14,7 +14,6 @@ buildscript {
 }
 
 project.ext {
-//	JDBC_DATABASE_URL = getDatabaseUrl()
 	version = "222.0"
 }
 
@@ -63,14 +62,14 @@ dependencies {
 task getDatabaseUrl() {
 	def databaseUrl = null
 	try {
-		Properties properties = new Properties()
-		properties.load(project.rootProject.file('local.properties')?.newDataInputStream())
-		databaseUrl = properties.getProperty('databaseUrl')
+		databaseUrl = System.getenv("JDBC_DATABASE_URL")
+		println("Success: load databaseUrl: $databaseUrl")
 	} catch (Exception ignored) {
-		println("Warning: local.properties loading failed Sentry SberChat data")
+		println("Warning: getenv loading failed")
 	}
 	project.ext.DATABASE_URL =  System.getenv('JDBC_DATABASE_URL') ?: databaseUrl
-	version = "33432"
+	println("Output project var: ${project.ext.DATABASE_URL}")
+	println("Output project version: ${project.ext.version}")
 }
 
 bootRun {
