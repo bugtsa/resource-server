@@ -16,13 +16,13 @@ fun main(args: Array<String>) {
 }
 
 private fun getProperties(): Properties {
-    val urlDatabase = System.getenv("EXT_DATABASE_URL")
-    val userNameDatabase = System.getenv("EXT_DATABASE_USERNAME")
-    val passwordDatabase = System.getenv("EXT_DATABASE_PASSWORD")
+    val urlDatabase = System.getenv("GOOGLE_DATABASE_URL")
+    val userNameDatabase = System.getenv("GOOGLE_DATABASE_USERNAME")
+    val passwordDatabase = System.getenv("GOOGLE_DATABASE_PASSWORD")
 //    val passwordDatabase = System.getenv("EXT_SECOND_DATABASE_PASSWORD")
-//    val urlDatabase = URL_DATABASE
-//    val userNameDatabase = USERNAME_DATABASE
-//    val passwordDatabase = PASSWORD_DATABASE
+//    val urlDatabase = URL_GOOGLE_DATABASE
+//    val userNameDatabase = USERNAME_GOOGLE_DATABASE
+//    val passwordDatabase = PASSWORD_GOOGLE_DATABASE
     val dataBaseConfig = createDataBaseConfig(
             url = urlDatabase,
             userName = userNameDatabase,
@@ -42,7 +42,7 @@ private fun getProperties(): Properties {
         put("spring.datasource.hikari.idleTimeout", 600000)
         put("spring.datasource.hikari.maxLifetime", 1800000)
         put("check-user-scopes", true)
-        put("server.port", 3306)
+        put("server.port", 9091)
 //        put("security.oauth2.resource.jwt.key-value",
 //                "    -----BEGIN PUBLIC KEY-----\n" +
 //                        "    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgnEzp25qlRJqe/IWf88o\n" +
