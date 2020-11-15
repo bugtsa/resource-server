@@ -42,7 +42,7 @@ private fun getProperties(): Properties {
         put("spring.datasource.hikari.idleTimeout", 600000)
         put("spring.datasource.hikari.maxLifetime", 1800000)
         put("check-user-scopes", true)
-        put("server.port", 9091)
+        put("server.port", 3306)
 //        put("security.oauth2.resource.jwt.key-value",
 //                "    -----BEGIN PUBLIC KEY-----\n" +
 //                        "    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgnEzp25qlRJqe/IWf88o\n" +
