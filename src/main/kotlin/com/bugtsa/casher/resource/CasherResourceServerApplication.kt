@@ -28,6 +28,7 @@ private fun getProperties(): Properties {
             userName = userNameDatabase,
             password = passwordDatabase
     )
+
     return Properties().apply {
         put("spring.datasource.url", dataBaseConfig.url)
         put("spring.datasource.username", dataBaseConfig.userName)
