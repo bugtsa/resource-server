@@ -19,6 +19,7 @@ private fun getProperties(): Properties {
     val urlDatabase = System.getenv("GOOGLE_DATABASE_URL")
     val userNameDatabase = System.getenv("GOOGLE_DATABASE_USERNAME")
     val passwordDatabase = System.getenv("GOOGLE_DATABASE_PASSWORD")
+
 //    val passwordDatabase = System.getenv("EXT_SECOND_DATABASE_PASSWORD")
 //    val urlDatabase = URL_GOOGLE_DATABASE
 //    val userNameDatabase = USERNAME_GOOGLE_DATABASE
