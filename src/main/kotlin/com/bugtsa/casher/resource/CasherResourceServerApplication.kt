@@ -17,9 +17,9 @@ fun main(args: Array<String>) {
 
 private fun getProperties(): Properties {
     val urlDatabase = System.getenv("EXT_DATABASE_URL")
-    val userNameDatabase = System.getenv("JDBC_DATABASE_USERNAME")
-//    val passwordDatabase = System.getenv("EXT_DATABASE_PASSWORD")
-    val passwordDatabase = System.getenv("EXT_SECOND_DATABASE_PASSWORD")
+    val userNameDatabase = System.getenv("EXT_DATABASE_USERNAME")
+    val passwordDatabase = System.getenv("EXT_DATABASE_PASSWORD")
+//    val passwordDatabase = System.getenv("EXT_SECOND_DATABASE_PASSWORD")
 //    val urlDatabase = URL_DATABASE
 //    val userNameDatabase = USERNAME_DATABASE
 //    val passwordDatabase = PASSWORD_DATABASE
