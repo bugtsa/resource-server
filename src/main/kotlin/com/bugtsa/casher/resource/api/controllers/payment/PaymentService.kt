@@ -77,7 +77,7 @@ class PaymentService {
     }
 
     fun addPayment(payment: Payment): PaymentDto {
-        val paymentDto = processPaymentDto(payment)
+        val paymentDto = PaymentDto(payment)
         paymentDto.categoryId = getCategoryId(payment.category)
         paymentDto.balance = processCurrentBalance(payment)
         val newPayment = Payment(paymentDto)
@@ -85,7 +85,7 @@ class PaymentService {
             newPayment.id = lastPayment.id + 1
         }
         paymentRepository.save(newPayment)
-        return paymentDto
+        return processPaymentDto(payment)
     }
 
     fun addPayments(payloadList: MutableList<PaymentRes>) {
