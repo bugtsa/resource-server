@@ -62,7 +62,7 @@ class PaymentController {
     fun addPayment(@ModelAttribute(USER_ID_PARAMETER) userId: String,
                    @ModelAttribute(COST_PARAMETER) cost: String,
                    @ModelAttribute(DATE_PARAMETER) date: String,
-                   @ModelAttribute(CATEGORY_PAYMENT_PARAMETER) category: String): ResponseEntity<Payment> {
+                   @ModelAttribute(CATEGORY_PAYMENT_PARAMETER) category: String): ResponseEntity<PaymentDto> {
         val payment = Payment(PaymentDto(userId = userId, cost = cost, date = date, category = category))
         val newPayment = paymentService.addPayment(payment)
         return ResponseEntity(newPayment, HttpStatus.OK)
