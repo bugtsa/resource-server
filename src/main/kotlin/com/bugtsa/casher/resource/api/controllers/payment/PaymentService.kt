@@ -3,6 +3,8 @@ package com.bugtsa.casher.resource.api.controllers.payment
 import com.bugtsa.casher.resource.api.controllers.category.CategoryService
 import com.bugtsa.casher.resource.api.data.entity.Category
 import com.bugtsa.casher.resource.api.data.entity.Payment
+import com.bugtsa.casher.resource.api.data.entity.Payment.Companion.DATE_AND_TIME_DELIMITER
+import com.bugtsa.casher.resource.api.data.entity.Payment.Companion.getDateTimePair
 import com.bugtsa.casher.resource.api.data.res.PaymentByDayRes
 import com.bugtsa.casher.resource.api.data.res.PaymentPageRes
 import com.bugtsa.casher.resource.api.data.res.PaymentPageWarningsRes
@@ -74,15 +76,16 @@ class PaymentService {
         return list
     }
 
-    fun addPayment(payment: Payment): Payment {
-        val paymentDto = PaymentDto(payment)
+    fun addPayment(payment: Payment): PaymentDto {
+        val paymentDto = processPaymentDto(payment)
         paymentDto.categoryId = getCategoryId(payment.category)
         paymentDto.balance = processCurrentBalance(payment)
         val newPayment = Payment(paymentDto)
         findLast()?.content?.last()?.also { lastPayment ->
             newPayment.id = lastPayment.id + 1
         }
-        return paymentRepository.save(newPayment)
+        paymentRepository.save(newPayment)
+        return paymentDto
     }
 
     fun addPayments(payloadList: MutableList<PaymentRes>) {
@@ -172,9 +175,7 @@ class PaymentService {
         val rawDate = payment.date
         return when (rawDate.contains(DATE_AND_TIME_DELIMITER)) {
             true -> {
-                val index = rawDate.indexOf(DATE_AND_TIME_DELIMITER)
-                val date = rawDate.substring(0, index)
-                val time = rawDate.substring(index + DATE_AND_TIME_DELIMITER.length, rawDate.length)
+                val (date, time) = getDateTimePair(rawDate)
                 PaymentDto(oldPayment = payment, newDate = date, newTime = time)
             }
             false -> PaymentDto(payment = payment)
@@ -221,8 +222,8 @@ class PaymentService {
     }
 
     companion object {
-        private const val DATE_AND_TIME_DELIMITER = ","
         const val DATE_FORMAT = "dd.MM.yy"
+
         private const val ID_NAME_COLUMN = "id"
         private const val SIZE_PAGE_REQUEST = 30
     }

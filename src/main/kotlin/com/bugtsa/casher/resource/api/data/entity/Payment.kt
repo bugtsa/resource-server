@@ -46,4 +46,16 @@ class Payment {
         this.price = payment.price
         this.description = payment.description
     }
+
+    companion object {
+
+        const val DATE_AND_TIME_DELIMITER = ","
+
+        fun getDateTimePair(rawDate: String): Pair<String, String> {
+            val index = rawDate.indexOf(DATE_AND_TIME_DELIMITER)
+            val date = rawDate.substring(0, index)
+            val time = rawDate.substring(index + DATE_AND_TIME_DELIMITER.length, rawDate.length)
+            return date to time
+        }
+    }
 }
