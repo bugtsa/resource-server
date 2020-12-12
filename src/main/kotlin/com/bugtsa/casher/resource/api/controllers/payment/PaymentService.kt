@@ -85,7 +85,7 @@ class PaymentService {
             newPayment.id = lastPayment.id + 1
         }
         paymentRepository.save(newPayment)
-        return processPaymentDto(payment)
+        return processPaymentDto(newPayment)
     }
 
     fun addPayments(payloadList: MutableList<PaymentRes>) {
