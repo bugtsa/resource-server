@@ -3,7 +3,9 @@ package com.bugtsa.casher.resource.api.controllers.avangard
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
+@RestController
 class VanguardController {
 
     @GetMapping("$VANGUARD_NAME$LOGIN_NAME")
