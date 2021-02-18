@@ -2,6 +2,7 @@ package com.bugtsa.casher.resource.api.controllers.avangard
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.LOGOUT_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
+import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder
 import com.mysql.cj.xdevapi.JsonString
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 class VanguardController {
 
     @PostMapping("$VANGUARD_NAME$LOGIN_NAME")
-    fun processLogin(@ModelAttribute("login") login: String): ResponseEntity<JsonString> =
+    fun processLogin(@ModelAttribute("login") login: String): ResponseEntity<String> =
         if (login == "test")
-            ResponseEntity(JsonString().setValue("{\n" +
+            ResponseEntity("{\n" +
                 "    \"error\":\"\",\n" +
                 "    \"code\":0,\n" +
                 "    \"data\":{\n" +
@@ -24,11 +25,11 @@ class VanguardController {
                 "        \"login\":\"Test\",\n" +
                 "        \"fio\":\"Петров И.И.\"\n" +
                 "    }\n" +
-                "}"), HttpStatus.OK)
-        else ResponseEntity(JsonString().setValue("{\n" +
+                "}", HttpStatus.OK)
+        else ResponseEntity("{\n" +
                 "\"error\":\"Произошла ошибка\",\n" +
                 "\"code\":-1\n" +
-                "}\n"), HttpStatus.OK)
+                "}\n", HttpStatus.OK)
 
     @GetMapping("$VANGUARD_NAME$LOGOUT_NAME")
     fun processLogout(): ResponseEntity<String> =
@@ -37,9 +38,9 @@ class VanguardController {
                     "\"code\":0\n" +
                     "}\n", HttpStatus.OK)
 
-    @GetMapping("$VANGUARD_NAME$SEEN_ORDERS")
-    fun processSeenOrders(): ResponseEntity<JsonString> =
-            ResponseEntity(JsonString().setValue("{\n" +
+    @GetMapping("$VANGUARD_NAME$ORDERS_NAME/0")
+    fun processSeenOrders(): ResponseEntity<String> =
+            ResponseEntity("{\n" +
                     "    \"error\":\"\",\n" +
                     "    \"code\":0,\n" +
                     "    \"data\":{\n" +
@@ -70,14 +71,16 @@ class VanguardController {
                     "            }\n" +
                     "        ]\n" +
                     "    }\n" +
-                    "}"), HttpStatus.OK)
+                    "}", HttpStatus.OK)
 
     companion object {
         private const val VANGUARD_NAME = "/vanguard"
         private const val LOGIN_NAME = "/login"
         private const val LOGOUT_NAME = "/logout"
 
-        private const val SEEN_ORDERS = "/orders/0"
+        private const val ORDERS_NAME = "/orders"
+        private const val SEEN_ORDERS = "/0"
         private const val DETAIL_FIRST = "5678912354"
     }
+
 }
