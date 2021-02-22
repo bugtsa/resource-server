@@ -1,23 +1,61 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
-import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.LOGOUT_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder
-import com.mysql.cj.xdevapi.JsonString
+import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.FIRST_ORDER_ID_VALUE
+import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.SECOND_ORDER_ID_VALUE
+import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.THIRD_ORDER_ID_VALUE
+import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.toStatusOrder
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping(VANGUARD_NAME)
 class VanguardController {
 
-    @PostMapping("$VANGUARD_NAME$LOGIN_NAME")
+    @PostMapping(LOGIN_NAME)
     fun processLogin(@ModelAttribute("login") login: String): ResponseEntity<String> =
-        if (login == "test")
+            if (login == "test")
+                ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
+            else
+                ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+
+    @GetMapping(LOGOUT_NAME)
+    fun processLogout(): ResponseEntity<String> =
             ResponseEntity("{\n" +
+                    "\"error\":\"\",\n" +
+                    "\"code\":0\n" +
+                    "}\n", HttpStatus.OK)
+
+    @GetMapping("$ORDERS_NAME/{statusId}")
+    fun processSeenOrders(@PathVariable statusId: Long): ResponseEntity<String> =
+            when (statusId.toStatusOrder()) {
+                StatusOrder.Seen -> ResponseEntity(ORDERS_STRING, HttpStatus.OK)
+                StatusOrder.First -> ResponseEntity(FIRST_ORDER_STRING, HttpStatus.OK)
+                StatusOrder.Second -> ResponseEntity(SECOND_ORDER_STRING, HttpStatus.OK)
+                StatusOrder.Third -> ResponseEntity(THIRD_ORDER_STRING, HttpStatus.OK)
+                StatusOrder.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+            }
+
+    @GetMapping("/directory")
+    fun processDirectory(): ResponseEntity<String> =
+            ResponseEntity(DIRECTORY_STRING, HttpStatus.OK)
+
+    companion object {
+
+        internal const val VANGUARD_NAME = "/vanguard"
+        private const val LOGIN_NAME = "/login"
+        private const val LOGOUT_NAME = "/logout"
+
+        private const val ORDERS_NAME = "/orders"
+
+        private const val MINUS_ONE_STRING = "{\n" +
+                "    \"error\":\"Произошла ошибка\",\n" +
+                "    \"code\":-1\n" +
+                "}"
+
+        private const val LOGIN_USER_STRING = "{\n" +
                 "    \"error\":\"\",\n" +
                 "    \"code\":0,\n" +
                 "    \"data\":{\n" +
@@ -25,62 +63,208 @@ class VanguardController {
                 "        \"login\":\"Test\",\n" +
                 "        \"fio\":\"Петров И.И.\"\n" +
                 "    }\n" +
-                "}", HttpStatus.OK)
-        else ResponseEntity("{\n" +
-                "\"error\":\"Произошла ошибка\",\n" +
-                "\"code\":-1\n" +
-                "}\n", HttpStatus.OK)
+                "}"
 
-    @GetMapping("$VANGUARD_NAME$LOGOUT_NAME")
-    fun processLogout(): ResponseEntity<String> =
-            ResponseEntity("{\n" +
-                    "\"error\":\"\",\n" +
-                    "\"code\":0\n" +
-                    "}\n", HttpStatus.OK)
+        private const val FIRST_DATE_TIME = "22.11.2020 10:30:00"
+        private const val SECOND_DATE_TIME = "22.01.2021 12:30:00"
+        private const val THIRD_DATE_TIME = "22.01.2021 15:30:00"
 
-    @GetMapping("$VANGUARD_NAME$ORDERS_NAME/0")
-    fun processSeenOrders(): ResponseEntity<String> =
-            ResponseEntity("{\n" +
-                    "    \"error\":\"\",\n" +
-                    "    \"code\":0,\n" +
-                    "    \"data\":{\n" +
-                    "        \"orders\":[\n" +
-                    "            {\n" +
-                    "                \"datatime\":\"22.11.2020 10:30:00\",\n" +
-                    "                \"num\":\"П21/270920\",\n" +
-                    "                \"tel\":\"79082524007\",\n" +
-                    "                \"typetech\":1234,\n" +
-                    "                \"nametech\":2345,\n" +
-                    "                \"adressname\":\"Мира 33-36\",\n" +
-                    "                \"latitude\":\"57.997431\",\n" +
-                    "                \"longitude\":\"56.238570\",\n" +
-                    "                \"id\":5678912354,\n" +
-                    "                \"status\":0\n" +
-                    "            },\n" +
-                    "            {\n" +
-                    "                \"datatime\":\"22.01.2021 12:30:00\",\n" +
-                    "                \"num\":\"П21/270922\",\n" +
-                    "                \"tel\":\"79082524008\",\n" +
-                    "                \"typetech\":1234,\n" +
-                    "                \"nametech\":2345,\n" +
-                    "                \"adressname\":\"Мира 33-37\",\n" +
-                    "                \"latitude\":\"57.997431\",\n" +
-                    "                \"longitude\":\"56.235570\",\n" +
-                    "                \"id\":5678912355,\n" +
-                    "                \"status\":0\n" +
-                    "            }\n" +
-                    "        ]\n" +
-                    "    }\n" +
-                    "}", HttpStatus.OK)
+        private const val FIRST_NUM = "П21/270920"
+        private const val SECOND_NUM = "П21/270922"
+        private const val THIRD_NUM = "П21/270925"
 
-    companion object {
-        private const val VANGUARD_NAME = "/vanguard"
-        private const val LOGIN_NAME = "/login"
-        private const val LOGOUT_NAME = "/logout"
+        private const val FIRST_TEL = "79082524007"
+        private const val SECOND_TEL = "79082524008"
+        private const val THIRD_TEL = "79082524005"
 
-        private const val ORDERS_NAME = "/orders"
-        private const val SEEN_ORDERS = "/0"
-        private const val DETAIL_FIRST = "5678912354"
+        private const val FIRST_ADDRESS_NAME = "Мира 33-36"
+        private const val SECOND_ADDRESS_NAME = "Мира 33-37"
+        private const val THIRD_ADDRESS_NAME = "Мира 35-39"
+
+        private const val FIRST_LAT = "57.997431"
+        private const val SECOND_LAT = "57.997432"
+        private const val THIRD_LAT = "57.997433"
+
+        private const val FIRST_LONG = "56.238570"
+        private const val SECOND_LONG = "56.238571"
+        private const val THIRD_LONG = "56.238572"
+
+        private const val FIRST_TYPE_TECH = 1235
+        private const val SECOND_TYPE_TECH = 1236
+        private const val THIRD_TYPE_TECH = 1237
+        private const val FIRST_NAME_TECH = 1266
+        private const val SECOND_NAME_TECH = 1267
+        private const val THIRD_NAME_TECH = 1268
+
+        private const val ORDERS_STRING = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "            {\n" +
+                "                \"datatime\":\"$FIRST_DATE_TIME\",\n" +
+                "                \"num\":\"$FIRST_NUM\",\n" +
+                "                \"tel\":\"$FIRST_TEL\",\n" +
+                "                \"typetech\":$FIRST_TYPE_TECH,\n" +
+                "                \"nametech\":$FIRST_NAME_TECH,\n" +
+                "                \"adressname\":\"$FIRST_ADDRESS_NAME\",\n" +
+                "                \"latitude\":\"$FIRST_LAT\",\n" +
+                "                \"longitude\":\"$FIRST_LONG\",\n" +
+                "                \"id\":$FIRST_ORDER_ID_VALUE,\n" +
+                "                \"status\":0\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"datatime\":\"$SECOND_DATE_TIME\",\n" +
+                "                \"num\":\"$SECOND_NUM\",\n" +
+                "                \"tel\":\"$SECOND_TEL\",\n" +
+                "                \"typetech\":$SECOND_TYPE_TECH,\n" +
+                "                \"nametech\":$SECOND_NAME_TECH,\n" +
+                "                \"adressname\":\"$SECOND_ADDRESS_NAME\",\n" +
+                "                \"latitude\":\"$SECOND_LAT\",\n" +
+                "                \"longitude\":\"$SECOND_LONG\",\n" +
+                "                \"id\":$SECOND_ORDER_ID_VALUE,\n" +
+                "                \"status\":0\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"datatime\":\"$THIRD_DATE_TIME\",\n" +
+                "                \"num\":\"$THIRD_NUM\",\n" +
+                "                \"tel\":\"$THIRD_TEL\",\n" +
+                "                \"typetech\":$THIRD_TYPE_TECH,\n" +
+                "                \"nametech\":$THIRD_NAME_TECH,\n" +
+                "                \"adressname\":\"$THIRD_ADDRESS_NAME\",\n" +
+                "                \"latitude\":\"$THIRD_LAT\",\n" +
+                "                \"longitude\":\"$THIRD_LONG\",\n" +
+                "                \"id\":$THIRD_ORDER_ID_VALUE,\n" +
+                "                \"status\":0\n" +
+                "            }\n" +
+                "        ]\n" +
+                "}"
+
+        private const val FIRST_ORDER_STRING = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\":{\n" +
+                "       \"datatime\":\"$FIRST_DATE_TIME\",\n" +
+                "       \"num\":\"$FIRST_NUM\",\n" +
+                "       \"tel\":\"$FIRST_TEL\",\n" +
+                "       \"typetech\":$FIRST_TYPE_TECH,\n" +
+                "       \"nametech\":$FIRST_NAME_TECH,\n" +
+                "       \"adressname\":\"$FIRST_ADDRESS_NAME\",\n" +
+                "       \"latitude\":\"$FIRST_LAT\",\n" +
+                "       \"longitude\":\"$FIRST_LONG\",\n" +
+                "       \"equipment\":\"Без двери\",\n" +
+                "       \"defect\":\"Не включается\",\n" +
+                "       \"stage\":\"Взять реле\",\n" +
+                "       \"status\":0,\n" +
+                "       \"date_time_exec\":[\n" +
+                "           {\n" +
+                "               \"date_exec\":\"22.11.2020 \",\n" +
+                "               \"time_start_exec\":\"10:30:00\",\n" +
+                "               \"time_end_exec\":\"11:30:00\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"date_exec\":\"23.11.2020 \",\n" +
+                "               \"time_start_exec\":\"15:30:00\",\n" +
+                "               \"time_end_exec\":\"21:30:00\"\n" +
+                "           }\n" +
+                "       ]\n" +
+                "    }\n" +
+                "}"
+
+        private const val SECOND_ORDER_STRING = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\":{\n" +
+                "       \"datatime\":\"$SECOND_DATE_TIME\",\n" +
+                "       \"num\":\"$SECOND_NUM\",\n" +
+                "       \"tel\":\"$SECOND_TEL\",\n" +
+                "       \"typetech\":$SECOND_TYPE_TECH,\n" +
+                "       \"nametech\":$SECOND_NAME_TECH,\n" +
+                "       \"adressname\":\"$SECOND_ADDRESS_NAME\",\n" +
+                "       \"latitude\":\"$SECOND_LAT\",\n" +
+                "       \"longitude\":\"$SECOND_LONG\",\n" +
+                "       \"equipment\":\"Без лестницы\",\n" +
+                "       \"defect\":\"Не выкручивается\",\n" +
+                "       \"stage\":\"Взять лестницу\",\n" +
+                "       \"status\":0,\n" +
+                "       \"date_time_exec\":[\n" +
+                "           {\n" +
+                "               \"date_exec\":\"22.11.2020 \",\n" +
+                "               \"time_start_exec\":\"10:30:00\",\n" +
+                "               \"time_end_exec\":\"11:30:00\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"date_exec\":\"23.11.2020 \",\n" +
+                "               \"time_start_exec\":\"15:30:00\",\n" +
+                "               \"time_end_exec\":\"21:30:00\"\n" +
+                "           }\n" +
+                "       ]\n" +
+                "    }\n" +
+                "}"
+
+        private const val THIRD_ORDER_STRING = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\":{\n" +
+                "       \"datatime\":\"$THIRD_DATE_TIME\",\n" +
+                "       \"num\":\"$THIRD_NUM\",\n" +
+                "       \"tel\":\"$THIRD_TEL\",\n" +
+                "       \"typetech\":$THIRD_TYPE_TECH,\n" +
+                "       \"nametech\":$THIRD_NAME_TECH,\n" +
+                "       \"adressname\":\"$THIRD_ADDRESS_NAME\",\n" +
+                "       \"latitude\":\"$THIRD_LAT\",\n" +
+                "       \"longitude\":\"$THIRD_LONG\",\n" +
+                "       \"equipment\":\"Без инструментов\",\n" +
+                "       \"defect\":\"Не функционирует\",\n" +
+                "       \"stage\":\"Взять отвертку\",\n" +
+                "       \"status\":0,\n" +
+                "       \"date_time_exec\":[\n" +
+                "           {\n" +
+                "               \"date_exec\":\"22.11.2020 \",\n" +
+                "               \"time_start_exec\":\"10:30:00\",\n" +
+                "               \"time_end_exec\":\"11:30:00\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"date_exec\":\"23.11.2020 \",\n" +
+                "               \"time_start_exec\":\"15:30:00\",\n" +
+                "               \"time_end_exec\":\"21:30:00\"\n" +
+                "           }\n" +
+                "       ]\n" +
+                "    }\n" +
+                "}"
+
+        private const val DIRECTORY_STRING = "{\n" +
+                "  \"error\":\"\",\n" +
+                "  \"code\":0,\n" +
+                "  \"data\":{\n" +
+                "       \"typetech\":[\n" +
+                "           {\n" +
+                "               \"id_tech\":$FIRST_TYPE_TECH,\n" +
+                "               \"tech_specif\":\"Холодильник\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"id_tech\":$SECOND_TYPE_TECH,\n" +
+                "               \"tech_specif\":\"Телевизор\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"id_tech\":$THIRD_TYPE_TECH,\n" +
+                "               \"tech_specif\":\"Чайник\"\n" +
+                "           }\n" +
+                "       ],\n" +
+                "       \"nametech\":[\n" +
+                "           {\n" +
+                "               \"id_name\":$FIRST_NAME_TECH,\n" +
+                "               \"name_specif\":\"Bosch\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"id_name\":$SECOND_NAME_TECH,\n" +
+                "               \"name_specif\":\"Samsung\"\n" +
+                "           },\n" +
+                "           {\n" +
+                "               \"id_name\":$THIRD_NAME_TECH,\n" +
+                "               \"name_specif\":\"Haier\"\n" +
+                "           }\n" +
+                "       ]\n" +
+                "    }\n" +
+                "}\n"
     }
-
 }
