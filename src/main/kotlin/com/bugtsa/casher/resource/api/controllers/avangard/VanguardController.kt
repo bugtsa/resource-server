@@ -1,6 +1,8 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
+import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder.Companion.toEditOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.FIRST_ORDER_ID_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.SECOND_ORDER_ID_VALUE
@@ -16,17 +18,14 @@ class VanguardController {
 
     @PostMapping(LOGIN_NAME)
     fun processLogin(@ModelAttribute("login") login: String): ResponseEntity<String> =
-            if (login == "test")
+            if (login == "")
                 ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
             else
                 ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
 
     @GetMapping(LOGOUT_NAME)
     fun processLogout(): ResponseEntity<String> =
-            ResponseEntity("{\n" +
-                    "\"error\":\"\",\n" +
-                    "\"code\":0\n" +
-                    "}\n", HttpStatus.OK)
+            ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
 
     @GetMapping("$ORDERS_NAME/{statusId}")
     fun processSeenOrders(@PathVariable statusId: Long): ResponseEntity<String> =
@@ -36,6 +35,17 @@ class VanguardController {
                 StatusOrder.Second -> ResponseEntity(SECOND_ORDER_STRING, HttpStatus.OK)
                 StatusOrder.Third -> ResponseEntity(THIRD_ORDER_STRING, HttpStatus.OK)
                 StatusOrder.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+            }
+
+    @PostMapping("$ORDERS_NAME/{orderId}")
+    fun editOrder(
+            @PathVariable orderId: Long,
+            @ModelAttribute("addressName") addressName: String,
+            @ModelAttribute("equipment") equipment: String,
+    ): ResponseEntity<String> =
+            when (orderId.toEditOrder(equipment)) {
+                EditOrder.Success -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+                EditOrder.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
             }
 
     @GetMapping("/directory")
@@ -54,6 +64,16 @@ class VanguardController {
                 "    \"error\":\"Произошла ошибка\",\n" +
                 "    \"code\":-1\n" +
                 "}"
+
+        private const val SUCCESS_ANSWER = "{\n" +
+                "\"error\":\"\",\n" +
+                "\"code\":0\n" +
+                "}\n"
+
+        private const val MISS_DATA = "{\n" +
+                "\"error\":\"Отстуствуют данные\",\n" +
+                "\"code\":-2\n" +
+                "}\n"
 
         private const val LOGIN_USER_STRING = "{\n" +
                 "    \"error\":\"\",\n" +
