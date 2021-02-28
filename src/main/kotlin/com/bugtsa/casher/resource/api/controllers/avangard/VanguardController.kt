@@ -1,8 +1,11 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
+import com.bugtsa.casher.resource.api.controllers.avangard.data.AttachmentOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.AttachmentOrder.Companion.toAttachment
 import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder.Companion.toEditOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.OrderFullUIModel
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.FIRST_ORDER_ID_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.SECOND_ORDER_ID_VALUE
@@ -40,10 +43,9 @@ class VanguardController {
     @PostMapping("$ORDERS_NAME/{orderId}")
     fun editOrder(
             @PathVariable orderId: Long,
-            @ModelAttribute("addressName") addressName: String,
-            @ModelAttribute("equipment") equipment: String,
+            @RequestBody orderFull: OrderFullUIModel
     ): ResponseEntity<String> =
-            when (orderId.toEditOrder(equipment)) {
+            when (orderId.toEditOrder(orderFull)) {
                 EditOrder.Success -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
                 EditOrder.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
             }
@@ -51,6 +53,16 @@ class VanguardController {
     @GetMapping("/directory")
     fun processDirectory(): ResponseEntity<String> =
             ResponseEntity(DIRECTORY_STRING, HttpStatus.OK)
+
+    @GetMapping("/attachment/{orderId}")
+    fun getAttachment(@PathVariable orderId: Long): ResponseEntity<String> =
+            when (orderId.toAttachment()) {
+                AttachmentOrder.First -> ResponseEntity(FIRST_ATTACHMENTS, HttpStatus.OK)
+                AttachmentOrder.Second -> ResponseEntity(SECOND_ATTACHMENTS, HttpStatus.OK)
+                AttachmentOrder.Third -> ResponseEntity(THIRD_ATTACHMENTS, HttpStatus.OK)
+                AttachmentOrder.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+
+            }
 
     companion object {
 
@@ -285,6 +297,63 @@ class VanguardController {
                 "           }\n" +
                 "       ]\n" +
                 "    }\n" +
+                "}\n"
+
+        private const val FIRST_ATTACHMENTS = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876543,\n" +
+                "           \"link_foto\":\"https://ibb.co/mNxbDCf\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876544,\n" +
+                "           \"link_foto\":\"https://ibb.co/Xsxj0kg\"\n" +
+                "       }\n" +
+                "    ]" +
+                "}\n"
+
+        private const val SECOND_ATTACHMENTS = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876545,\n" +
+                "           \"link_foto\":\"https://ibb.co/LpbdPZC\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876547,\n" +
+                "           \"link_foto\":\"https://ibb.co/C5pBxhb\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876546,\n" +
+                "           \"link_foto\":\"https://ibb.co/WghrNxn\"\n" +
+                "       }\n" +
+                "    ]" +
+                "}\n"
+
+        private const val THIRD_ATTACHMENTS = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876553,\n" +
+                "           \"link_foto\":\"https://ibb.co/wSYPXJP\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876555,\n" +
+                "           \"link_foto\":\"https://ibb.co/6w8Y6S5\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876556,\n" +
+                "           \"link_foto\":\"https://ibb.co/wJsvr4C\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876554,\n" +
+                "           \"link_foto\":\"https://ibb.co/MPXcQ98\"\n" +
+                "       }\n" +
+                "    ]" +
                 "}\n"
     }
 }

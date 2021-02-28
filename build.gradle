@@ -1,5 +1,5 @@
 buildscript {
-	ext.kotlin_version = '1.4.10'
+	ext.kotlin_version = '1.4.30'
 	ext.spring_boot_version = '2.1.8.RELEASE'
 	repositories {
 		jcenter()
@@ -7,6 +7,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
 		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
 		classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
@@ -18,6 +19,7 @@ apply plugin: "kotlin-spring"
 apply plugin: "kotlin-jpa"
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'kotlinx-serialization'
 
 jar {
 	setArchivesBaseName("casher-bugtsa-resource-service")
@@ -47,6 +49,7 @@ dependencies {
 	compile 'mysql:mysql-connector-java'
 
 	compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
+	implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
 
 	compile 'javax.xml.bind:jaxb-api'
 	compile 'org.hibernate:hibernate-core'
