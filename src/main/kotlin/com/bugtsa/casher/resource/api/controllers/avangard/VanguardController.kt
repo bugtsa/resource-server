@@ -305,11 +305,11 @@ class VanguardController {
                 "    \"data\": [\n" +
                 "       {\n" +
                 "           \"id_foto\":9876543,\n" +
-                "           \"link_foto\":\"https://ibb.co/mNxbDCf\"\n" +
+                "           \"link_foto\":\"https://upload.wikimedia.org/wikipedia/commons/7/70/Jfk2.jpg\"\n" +
                 "       },\n" +
                 "       {\n" +
                 "           \"id_foto\":9876544,\n" +
-                "           \"link_foto\":\"https://ibb.co/Xsxj0kg\"\n" +
+                "           \"link_foto\":\"https://i.stack.imgur.com/T476i.png\"\n" +
                 "       }\n" +
                 "    ]" +
                 "}\n"
@@ -320,15 +320,15 @@ class VanguardController {
                 "    \"data\": [\n" +
                 "       {\n" +
                 "           \"id_foto\":9876545,\n" +
-                "           \"link_foto\":\"https://ibb.co/LpbdPZC\"\n" +
+                "           \"link_foto\":\"https://i.stack.imgur.com/T476i.png\"\n" +
                 "       },\n" +
                 "       {\n" +
                 "           \"id_foto\":9876547,\n" +
-                "           \"link_foto\":\"https://ibb.co/C5pBxhb\"\n" +
+                "           \"link_foto\":\"https://i.stack.imgur.com/VGGG3.png\"\n" +
                 "       },\n" +
                 "       {\n" +
                 "           \"id_foto\":9876546,\n" +
-                "           \"link_foto\":\"https://ibb.co/WghrNxn\"\n" +
+                "           \"link_foto\":\"https://upload.wikimedia.org/wikipedia/commons/7/70/Jfk2.jpg\"\n" +
                 "       }\n" +
                 "    ]" +
                 "}\n"
@@ -339,21 +339,22 @@ class VanguardController {
                 "    \"data\": [\n" +
                 "       {\n" +
                 "           \"id_foto\":9876553,\n" +
-                "           \"link_foto\":\"https://ibb.co/wSYPXJP\"\n" +
+                "           \"link_foto\":\"https://tse1.mm.bing.net/th?id=OIP.9dNMVRmk1a3edFYrwzcFeQHaIi&pid=Api\"\n" +
                 "       },\n" +
                 "       {\n" +
                 "           \"id_foto\":9876555,\n" +
-                "           \"link_foto\":\"https://ibb.co/6w8Y6S5\"\n" +
+                "           \"link_foto\":\"https://i.stack.imgur.com/VGGG3.png\"\n" +
                 "       },\n" +
                 "       {\n" +
                 "           \"id_foto\":9876556,\n" +
-                "           \"link_foto\":\"https://ibb.co/wJsvr4C\"\n" +
+                "           \"link_foto\":\"https://i.stack.imgur.com/T476i.png\"\n" +
                 "       },\n" +
                 "       {\n" +
                 "           \"id_foto\":9876554,\n" +
-                "           \"link_foto\":\"https://ibb.co/MPXcQ98\"\n" +
+                "           \"link_foto\":\"https://upload.wikimedia.org/wikipedia/commons/7/70/Jfk2.jpg\"\n" +
                 "       }\n" +
                 "    ]" +
                 "}\n"
     }
+
 }
