@@ -2,12 +2,17 @@ package com.bugtsa.casher.resource.api.controllers.avangard
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.data.*
-import com.bugtsa.casher.resource.api.controllers.avangard.data.AttachmentOrder.Companion.toAttachment
-import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder.Companion.toEditOrder
-import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.FIRST_ORDER_ID_VALUE
-import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.SECOND_ORDER_ID_VALUE
-import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.THIRD_ORDER_ID_VALUE
-import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.toStatusOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.*
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.AttachmentOrder.Companion.toAttachment
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.EditOrder.Companion.toEditOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.FIRST_ORDER_ID_VALUE
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.SECOND_ORDER_ID_VALUE
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.THIRD_ORDER_ID_VALUE
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.toOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderSet.Companion.toOrderStatus
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.StatusOrderType.Companion.toStatusOrderType
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.SendAttachmentData
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,14 +33,14 @@ class VanguardController {
     fun processLogout(): ResponseEntity<String> =
             ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
 
-    @GetMapping("$ORDERS_NAME/{statusId}")
-    fun processSeenOrders(@PathVariable statusId: Long): ResponseEntity<String> =
-            when (statusId.toStatusOrder()) {
-                StatusOrder.Seen -> ResponseEntity(ORDERS_STRING, HttpStatus.OK)
-                StatusOrder.First -> ResponseEntity(FIRST_ORDER_STRING, HttpStatus.OK)
-                StatusOrder.Second -> ResponseEntity(SECOND_ORDER_STRING, HttpStatus.OK)
-                StatusOrder.Third -> ResponseEntity(THIRD_ORDER_STRING, HttpStatus.OK)
-                StatusOrder.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+    @GetMapping("$ORDERS_NAME/{orderId}")
+    fun processSeenOrders(@PathVariable orderId: Long): ResponseEntity<String> =
+            when (orderId.toOrder()) {
+                OrderPageSet.Seen -> ResponseEntity(ORDERS_STRING, HttpStatus.OK)
+                OrderPageSet.First -> ResponseEntity(FIRST_ORDER_STRING, HttpStatus.OK)
+                OrderPageSet.Second -> ResponseEntity(SECOND_ORDER_STRING, HttpStatus.OK)
+                OrderPageSet.Third -> ResponseEntity(THIRD_ORDER_STRING, HttpStatus.OK)
+                OrderPageSet.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
             }
 
     @PostMapping("$ORDERS_NAME/{orderId}")
@@ -46,6 +51,22 @@ class VanguardController {
             when (orderId.toEditOrder(orderFull)) {
                 EditOrder.Success -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
                 EditOrder.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
+            }
+
+    @PostMapping("$ORDERS_NAME/status/{orderId}/{statusType}")
+    fun setupStatus(
+            @PathVariable orderId: Long,
+            @PathVariable statusType: Int
+    ): ResponseEntity<String> =
+            when (orderId.toOrderStatus()) {
+                OrderSet.First, OrderSet.Second, OrderSet.Third -> {
+                    when (statusType.toStatusOrderType()) {
+                        StatusOrderType.Open, StatusOrderType.InWork, StatusOrderType.Waiting,
+                        StatusOrderType.Ready, StatusOrderType.Complete -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+                        StatusOrderType.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
+                    }
+                }
+                OrderSet.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
             }
 
     @GetMapping("/directory")
@@ -64,12 +85,15 @@ class VanguardController {
     @PostMapping("$ATTACHMENT_NAME/{orderId}")
     fun saveAttachment(
             @PathVariable orderId: Long,
+//            @ModelAttribute("foto") sdfasd: String,
             @RequestBody attachmentUIModel: SendAttachmentData
-    ) : ResponseEntity<String> {
-        val arrayResponse = listOf(FIRST_SAVED_ATTACHMENTS,
+    ): ResponseEntity<String> {
+        val arrayResponse = listOf(
+                FIRST_SAVED_ATTACHMENTS,
                 SECOND_SAVED_ATTACHMENTS,
                 THIRD_SAVED_ATTACHMENTS,
-                FOUR_SAVED_ATTACHMENTS)
+                FOUR_SAVED_ATTACHMENTS
+        )
         val randomPos = Random.nextInt(0, arrayResponse.size - 1)
         return ResponseEntity(arrayResponse[randomPos], HttpStatus.OK)
     }
@@ -368,19 +392,19 @@ class VanguardController {
                 "}\n"
 
         private const val FIRST_SAVED_ATTACHMENTS = "{\n" +
-                        "    \"error\":\"\",\n" +
-                        "    \"code\":0,\n" +
-                        "    \"data\": [\n" +
-                        "       {\n" +
-                        "           \"id_foto\":9876543,\n" +
-                        "           \"link_foto\":\"https://i.imgur.com/OvuyN79.jpg\"\n" +
-                        "       },\n" +
-                        "       {\n" +
-                        "           \"id_foto\":9876544,\n" +
-                        "           \"link_foto\":\"https://i.imgur.com/MCkRuvG.jpg\"\n" +
-                        "       }\n" +
-                        "    ]" +
-                        "}\n"
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876543,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/OvuyN79.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876544,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/MCkRuvG.jpg\"\n" +
+                "       }\n" +
+                "    ]" +
+                "}\n"
 
         private const val SECOND_SAVED_ATTACHMENTS = "{\n" +
                 "    \"error\":\"\",\n" +

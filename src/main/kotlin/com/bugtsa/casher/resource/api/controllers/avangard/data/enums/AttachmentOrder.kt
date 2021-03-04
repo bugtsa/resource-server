@@ -1,4 +1,4 @@
-package com.bugtsa.casher.resource.api.controllers.avangard.data
+package com.bugtsa.casher.resource.api.controllers.avangard.data.enums
 
 sealed class AttachmentOrder {
 
@@ -14,9 +14,9 @@ sealed class AttachmentOrder {
 
         fun Long.toAttachment(): AttachmentOrder =
                 when(this) {
-                    StatusOrder.FIRST_ORDER_ID_VALUE -> First
-                    StatusOrder.SECOND_ORDER_ID_VALUE -> Second
-                    StatusOrder.THIRD_ORDER_ID_VALUE -> Third
+                    OrderPageSet.FIRST_ORDER_ID_VALUE -> First
+                    OrderPageSet.SECOND_ORDER_ID_VALUE -> Second
+                    OrderPageSet.THIRD_ORDER_ID_VALUE -> Third
                     else -> Fail
                 }
     }

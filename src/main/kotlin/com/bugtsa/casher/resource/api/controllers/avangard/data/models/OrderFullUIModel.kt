@@ -1,4 +1,4 @@
-package com.bugtsa.casher.resource.api.controllers.avangard.data
+package com.bugtsa.casher.resource.api.controllers.avangard.data.models
 
 @kotlinx.serialization.Serializable
 data class OrderFullUIModel(

@@ -1,18 +1,18 @@
-package com.bugtsa.casher.resource.api.controllers.avangard.data
+package com.bugtsa.casher.resource.api.controllers.avangard.data.enums
 
-sealed class StatusOrder(
-        val status: Long
+sealed class OrderPageSet(
+        val orderId: Long
 ) {
 
-    object Seen : StatusOrder(SEEN_VALUE)
+    object Seen : OrderPageSet(SEEN_VALUE)
 
-    object Fail : StatusOrder(FAIL_VALUE)
+    object Fail : OrderPageSet(FAIL_VALUE)
 
-    object First : StatusOrder(FIRST_ORDER_ID_VALUE)
+    object First : OrderPageSet(FIRST_ORDER_ID_VALUE)
 
-    object Second : StatusOrder(SECOND_ORDER_ID_VALUE)
+    object Second : OrderPageSet(SECOND_ORDER_ID_VALUE)
 
-    object Third : StatusOrder(THIRD_ORDER_ID_VALUE)
+    object Third : OrderPageSet(THIRD_ORDER_ID_VALUE)
 
     companion object {
 
@@ -23,7 +23,7 @@ sealed class StatusOrder(
         private const val SEEN_VALUE = 0L
         private const val FAIL_VALUE = -1L
 
-        fun Long.toStatusOrder(): StatusOrder =
+        fun Long.toOrder(): OrderPageSet =
                 when (this) {
                     SEEN_VALUE -> Seen
                     FIRST_ORDER_ID_VALUE -> First
@@ -32,7 +32,7 @@ sealed class StatusOrder(
                     else -> Fail
                 }
 
-        fun StatusOrder.toId(): Long =
+        fun OrderPageSet.toId(): Long =
                 when (this) {
                     Seen -> SEEN_VALUE
                     First -> FIRST_ORDER_ID_VALUE

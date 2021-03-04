@@ -1,4 +1,6 @@
-package com.bugtsa.casher.resource.api.controllers.avangard.data
+package com.bugtsa.casher.resource.api.controllers.avangard.data.enums
+
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
 
 sealed class EditOrder {
 
@@ -10,9 +12,9 @@ sealed class EditOrder {
 
         fun Long.toEditOrder(orderFull: OrderFullUIModel): EditOrder =
                 when (this) {
-                    StatusOrder.FIRST_ORDER_ID_VALUE,
-                    StatusOrder.SECOND_ORDER_ID_VALUE,
-                    StatusOrder.THIRD_ORDER_ID_VALUE ->  {
+                    OrderPageSet.FIRST_ORDER_ID_VALUE,
+                    OrderPageSet.SECOND_ORDER_ID_VALUE,
+                    OrderPageSet.THIRD_ORDER_ID_VALUE ->  {
                         if (orderFull.equipment == "Luck") {
                             Success
                         } else {
