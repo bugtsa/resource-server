@@ -1,12 +1,9 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
-import com.bugtsa.casher.resource.api.controllers.avangard.data.AttachmentOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.*
 import com.bugtsa.casher.resource.api.controllers.avangard.data.AttachmentOrder.Companion.toAttachment
-import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.EditOrder.Companion.toEditOrder
-import com.bugtsa.casher.resource.api.controllers.avangard.data.OrderFullUIModel
-import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.FIRST_ORDER_ID_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.SECOND_ORDER_ID_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Companion.THIRD_ORDER_ID_VALUE
@@ -14,6 +11,7 @@ import com.bugtsa.casher.resource.api.controllers.avangard.data.StatusOrder.Comp
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import kotlin.random.Random
 
 @RestController
 @RequestMapping(VANGUARD_NAME)
@@ -54,15 +52,27 @@ class VanguardController {
     fun processDirectory(): ResponseEntity<String> =
             ResponseEntity(DIRECTORY_STRING, HttpStatus.OK)
 
-    @GetMapping("/attachment/{orderId}")
+    @GetMapping("$ATTACHMENT_NAME/{orderId}")
     fun getAttachment(@PathVariable orderId: Long): ResponseEntity<String> =
             when (orderId.toAttachment()) {
                 AttachmentOrder.First -> ResponseEntity(FIRST_ATTACHMENTS, HttpStatus.OK)
                 AttachmentOrder.Second -> ResponseEntity(SECOND_ATTACHMENTS, HttpStatus.OK)
                 AttachmentOrder.Third -> ResponseEntity(THIRD_ATTACHMENTS, HttpStatus.OK)
                 AttachmentOrder.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
-
             }
+
+    @PostMapping("$ATTACHMENT_NAME/{orderId}")
+    fun saveAttachment(
+            @PathVariable orderId: Long,
+            @RequestBody attachmentUIModel: SendAttachmentData
+    ) : ResponseEntity<String> {
+        val arrayResponse = listOf(FIRST_SAVED_ATTACHMENTS,
+                SECOND_SAVED_ATTACHMENTS,
+                THIRD_SAVED_ATTACHMENTS,
+                FOUR_SAVED_ATTACHMENTS)
+        val randomPos = Random.nextInt(0, arrayResponse.size - 1)
+        return ResponseEntity(arrayResponse[randomPos], HttpStatus.OK)
+    }
 
     companion object {
 
@@ -71,6 +81,7 @@ class VanguardController {
         private const val LOGOUT_NAME = "/logout"
 
         private const val ORDERS_NAME = "/orders"
+        private const val ATTACHMENT_NAME = "/attachment"
 
         private const val MINUS_ONE_STRING = "{\n" +
                 "    \"error\":\"Произошла ошибка\",\n" +
@@ -352,6 +363,78 @@ class VanguardController {
                 "       {\n" +
                 "           \"id_foto\":9876554,\n" +
                 "           \"link_foto\":\"https://upload.wikimedia.org/wikipedia/commons/7/70/Jfk2.jpg\"\n" +
+                "       }\n" +
+                "    ]" +
+                "}\n"
+
+        private const val FIRST_SAVED_ATTACHMENTS = "{\n" +
+                        "    \"error\":\"\",\n" +
+                        "    \"code\":0,\n" +
+                        "    \"data\": [\n" +
+                        "       {\n" +
+                        "           \"id_foto\":9876543,\n" +
+                        "           \"link_foto\":\"https://i.imgur.com/OvuyN79.jpg\"\n" +
+                        "       },\n" +
+                        "       {\n" +
+                        "           \"id_foto\":9876544,\n" +
+                        "           \"link_foto\":\"https://i.imgur.com/MCkRuvG.jpg\"\n" +
+                        "       }\n" +
+                        "    ]" +
+                        "}\n"
+
+        private const val SECOND_SAVED_ATTACHMENTS = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876545,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/huBcOmN.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876547,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/imX6ORl.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876546,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/nVo66gE.jpg\"\n" +
+                "       }\n" +
+                "    ]" +
+                "}\n"
+
+        private const val THIRD_SAVED_ATTACHMENTS = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876553,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/nnYBLlm.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876555,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/VtFWuZI.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876556,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/Xvnkwhx.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876554,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/j8KrdjY.jpg\"\n" +
+                "       }\n" +
+                "    ]" +
+                "}\n"
+
+        private const val FOUR_SAVED_ATTACHMENTS = "{\n" +
+                "    \"error\":\"\",\n" +
+                "    \"code\":0,\n" +
+                "    \"data\": [\n" +
+                "       {\n" +
+                "           \"id_foto\":9876553,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/E7NFyAu.jpg\"\n" +
+                "       },\n" +
+                "       {\n" +
+                "           \"id_foto\":9876554,\n" +
+                "           \"link_foto\":\"https://i.imgur.com/g9CN4XH.jpeg\"\n" +
                 "       }\n" +
                 "    ]" +
                 "}\n"
