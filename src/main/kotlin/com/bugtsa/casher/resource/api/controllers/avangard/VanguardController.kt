@@ -1,7 +1,6 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
-import com.bugtsa.casher.resource.api.controllers.avangard.data.*
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.*
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.AttachmentOrder.Companion.toAttachment
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.EditOrder.Companion.toEditOrder
@@ -12,7 +11,8 @@ import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageS
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderSet.Companion.toOrderStatus
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.StatusOrderType.Companion.toStatusOrderType
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
-import com.bugtsa.casher.resource.api.controllers.avangard.data.models.SendAttachmentData
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.AttachmentUIModel
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.SendAttachmentUIModel
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -85,8 +85,7 @@ class VanguardController {
     @PostMapping("$ATTACHMENT_NAME/{orderId}")
     fun saveAttachment(
             @PathVariable orderId: Long,
-//            @ModelAttribute("foto") sdfasd: String,
-            @RequestBody attachmentUIModel: SendAttachmentData
+            @RequestBody sendAttachmentUIModel: SendAttachmentUIModel
     ): ResponseEntity<String> {
         val arrayResponse = listOf(
                 FIRST_SAVED_ATTACHMENTS,

@@ -2,8 +2,8 @@ package com.bugtsa.casher.resource.api.controllers.avangard.data.models
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class AttachmentUIModel(
+data class SendAttachmentUIModel(
 
-        @field:JsonProperty("foto")
-        val foto: String
+        @field:JsonProperty("array")
+        val ring: ArrayList<AttachmentUIModel>
 )
