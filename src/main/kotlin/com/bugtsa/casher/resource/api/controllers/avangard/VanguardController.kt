@@ -147,13 +147,13 @@ class VanguardController {
         private const val SECOND_ADDRESS_NAME = "Мира 33-37"
         private const val THIRD_ADDRESS_NAME = "Мира 35-39"
 
-        private const val FIRST_LAT = "57.997431"
-        private const val SECOND_LAT = "57.997432"
-        private const val THIRD_LAT = "57.997433"
+        private const val FIRST_LAT = "55.764165"
+        private const val SECOND_LAT = "55.757140"
+        private const val THIRD_LAT = "55.751703"
 
-        private const val FIRST_LONG = "56.238570"
-        private const val SECOND_LONG = "56.238571"
-        private const val THIRD_LONG = "56.238572"
+        private const val FIRST_LONG = "37.631199"
+        private const val SECOND_LONG = "37.611942"
+        private const val THIRD_LONG = "37.627169"
 
         private const val FIRST_TYPE_TECH = 1235
         private const val SECOND_TYPE_TECH = 1236
