@@ -12,6 +12,7 @@ import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderSet.C
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.StatusOrderType.Companion.toStatusOrderType
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.AttachmentUIModel
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.LoginUIModel
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.SendAttachmentUIModel
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,8 +24,8 @@ import kotlin.random.Random
 class VanguardController {
 
     @PostMapping(LOGIN_NAME)
-    fun processLogin(@ModelAttribute("login") login: String): ResponseEntity<String> =
-            if (login == SUCCESS_FIELD_VALUE)
+    fun processLogin(@RequestBody loginModel: LoginUIModel): ResponseEntity<String> =
+            if (loginModel.login == SUCCESS_FIELD_VALUE)
                 ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
             else
                 ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
