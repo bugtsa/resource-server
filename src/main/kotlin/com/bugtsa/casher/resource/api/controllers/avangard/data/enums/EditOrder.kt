@@ -1,5 +1,6 @@
 package com.bugtsa.casher.resource.api.controllers.avangard.data.enums
 
+import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.SUCCESS_FIELD_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
 
 sealed class EditOrder {
@@ -15,7 +16,7 @@ sealed class EditOrder {
                     OrderPageSet.FIRST_ORDER_ID_VALUE,
                     OrderPageSet.SECOND_ORDER_ID_VALUE,
                     OrderPageSet.THIRD_ORDER_ID_VALUE ->  {
-                        if (orderFull.equipment == "Luck") {
+                        if (orderFull.equipment == SUCCESS_FIELD_VALUE) {
                             Success
                         } else {
                             Fail

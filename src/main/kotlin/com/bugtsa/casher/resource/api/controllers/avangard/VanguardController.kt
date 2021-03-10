@@ -24,7 +24,7 @@ class VanguardController {
 
     @PostMapping(LOGIN_NAME)
     fun processLogin(@ModelAttribute("login") login: String): ResponseEntity<String> =
-            if (login == "")
+            if (login == SUCCESS_FIELD_VALUE)
                 ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
             else
                 ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
@@ -99,11 +99,14 @@ class VanguardController {
 
     companion object {
 
+        internal const val SUCCESS_FIELD_VALUE = "test"
         internal const val VANGUARD_NAME = "/vanguard"
-        private const val LOGIN_NAME = "/login"
-        private const val LOGOUT_NAME = "/logout"
 
+        private const val LOGIN_NAME = "/login"
+
+        private const val LOGOUT_NAME = "/logout"
         private const val ORDERS_NAME = "/orders"
+
         private const val ATTACHMENT_NAME = "/attachment"
 
         private const val MINUS_ONE_STRING = "{\n" +

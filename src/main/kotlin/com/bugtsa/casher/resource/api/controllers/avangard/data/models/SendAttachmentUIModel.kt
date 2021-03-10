@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class SendAttachmentUIModel(
 
-        @field:JsonProperty("array")
-        val ring: ArrayList<AttachmentUIModel>
+        @field:JsonProperty("data")
+        val array: ArrayList<AttachmentUIModel>
 )
