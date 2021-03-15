@@ -25,10 +25,18 @@ class VanguardController {
 
     @PostMapping(LOGIN_NAME)
     fun processLogin(@RequestBody loginModel: LoginUIModel): ResponseEntity<String> =
-            if (loginModel.login == SUCCESS_FIELD_VALUE)
-                ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
-            else
-                ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+            when {
+                loginModel.login == SUCCESS_FIELD_VALUE && loginModel.password == SUCCESS_FIELD_VALUE &&
+                        loginModel.smsCode.isEmpty() ->
+                    ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+                (loginModel.login != SUCCESS_FIELD_VALUE || loginModel.password != SUCCESS_FIELD_VALUE) &&
+                        loginModel.smsCode.isEmpty() ->
+                    ResponseEntity(SMS_SEND_ERROR, HttpStatus.OK)
+                loginModel.login == SUCCESS_FIELD_VALUE && loginModel.smsCode == SMS_CODE_SUCCESS_VALUE &&
+                        loginModel.password.isEmpty() ->
+                    ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
+                else -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+            }
 
     @GetMapping(LOGOUT_NAME)
     fun processLogout(): ResponseEntity<String> =
@@ -101,6 +109,7 @@ class VanguardController {
     companion object {
 
         internal const val SUCCESS_FIELD_VALUE = "test"
+        internal const val SMS_CODE_SUCCESS_VALUE = "4567"
         internal const val VANGUARD_NAME = "/vanguard"
 
         private const val LOGIN_NAME = "/login"
@@ -113,6 +122,11 @@ class VanguardController {
         private const val MINUS_ONE_STRING = "{\n" +
                 "    \"error\":\"Произошла ошибка\",\n" +
                 "    \"code\":-1\n" +
+                "}"
+
+        private const val SMS_SEND_ERROR = "{\n" +
+                "    \"error\":\"Произошла ошибка при отправке SMS\",\n" +
+                "    \"code\":-4\n" +
                 "}"
 
         private const val SUCCESS_ANSWER = "{\n" +
