@@ -14,6 +14,8 @@ sealed class StatusOrderType(
 
     object Complete : StatusOrderType(COMPLETE_ORDER)
 
+    object Cancel : StatusOrderType(CANCEL_ORDER)
+
     object Fail : StatusOrderType(-1)
 
     companion object {
@@ -23,6 +25,7 @@ sealed class StatusOrderType(
         const val WAITING_ORDER = 2
         const val READY_ORDER = 3
         const val COMPLETE_ORDER = 4
+        const val CANCEL_ORDER = 5
 
         fun Int.toStatusOrderType(): StatusOrderType =
                 when(this) {
@@ -31,6 +34,7 @@ sealed class StatusOrderType(
                     WAITING_ORDER -> Waiting
                     READY_ORDER -> Ready
                     COMPLETE_ORDER -> Complete
+                    CANCEL_ORDER -> Cancel
                     else -> Fail
                 }
     }

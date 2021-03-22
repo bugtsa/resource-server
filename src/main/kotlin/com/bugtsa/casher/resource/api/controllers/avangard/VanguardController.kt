@@ -70,7 +70,7 @@ class VanguardController {
             when (orderId.toOrderStatus()) {
                 OrderSet.First, OrderSet.Second, OrderSet.Third -> {
                     when (statusType.toStatusOrderType()) {
-                        StatusOrderType.Open, StatusOrderType.InWork, StatusOrderType.Waiting,
+                        StatusOrderType.Open, StatusOrderType.InWork, StatusOrderType.Cancel, StatusOrderType.Waiting,
                         StatusOrderType.Ready, StatusOrderType.Complete -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
                         StatusOrderType.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
                     }
