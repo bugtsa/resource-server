@@ -1,5 +1,6 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
+import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.NOTIFICATION_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.*
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.AttachmentOrder.Companion.toAttachment
@@ -10,10 +11,8 @@ import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageS
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.toOrder
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderSet.Companion.toOrderStatus
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.StatusOrderType.Companion.toStatusOrderType
-import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
-import com.bugtsa.casher.resource.api.controllers.avangard.data.models.AttachmentUIModel
-import com.bugtsa.casher.resource.api.controllers.avangard.data.models.LoginUIModel
-import com.bugtsa.casher.resource.api.controllers.avangard.data.models.SendAttachmentUIModel
+import com.bugtsa.casher.resource.api.controllers.avangard.data.models.*
+import com.bugtsa.casher.resource.api.controllers.avangard.utils.DataUtils.getHoursAndMinutes
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -106,6 +105,24 @@ class VanguardController {
         return ResponseEntity(arrayResponse[randomPos], HttpStatus.OK)
     }
 
+    @PostMapping("$NOTIFICATION_NAME")
+    fun setupNotification(
+            @RequestBody notificationUIModel: NotificationUIModel
+    ): ResponseEntity<String> {
+        val (hours, minutes) = getHoursAndMinutes(notificationUIModel.time)
+        return when {
+            hours == 1 -> {
+                ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+            }
+            minutes == 30 -> {
+                ResponseEntity(TOKEN_ERROR, HttpStatus.OK)
+            }
+            else -> {
+                ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+            }
+        }
+    }
+
     companion object {
 
         internal const val SUCCESS_FIELD_VALUE = "test"
@@ -119,25 +136,32 @@ class VanguardController {
 
         private const val ATTACHMENT_NAME = "/attachment"
 
-        private const val MINUS_ONE_STRING = "{\n" +
-                "    \"error\":\"Произошла ошибка\",\n" +
-                "    \"code\":-1\n" +
-                "}"
-
-        private const val SMS_SEND_ERROR = "{\n" +
-                "    \"error\":\"Произошла ошибка при отправке SMS\",\n" +
-                "    \"code\":-4\n" +
-                "}"
+        private const val NOTIFICATION_NAME = "/notification"
 
         private const val SUCCESS_ANSWER = "{\n" +
                 "\"error\":\"\",\n" +
                 "\"code\":0\n" +
                 "}\n"
 
+        private const val MINUS_ONE_STRING = "{\n" +
+                "    \"error\":\"Произошла ошибка\",\n" +
+                "    \"code\":-1\n" +
+                "}"
+
         private const val MISS_DATA = "{\n" +
                 "\"error\":\"Отстуствуют данные\",\n" +
                 "\"code\":-2\n" +
                 "}\n"
+
+        private const val TOKEN_ERROR = "{\n" +
+                "    \"error\":\"Ошибка токена\",\n" +
+                "    \"code\":-3\n" +
+                "}"
+
+        private const val SMS_SEND_ERROR = "{\n" +
+                "    \"error\":\"Произошла ошибка при отправке SMS\",\n" +
+                "    \"code\":-4\n" +
+                "}"
 
         private const val LOGIN_USER_STRING = "{\n" +
                 "    \"error\":\"\",\n" +
