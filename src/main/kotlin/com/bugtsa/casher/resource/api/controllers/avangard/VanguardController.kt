@@ -1,6 +1,5 @@
 package com.bugtsa.casher.resource.api.controllers.avangard
 
-import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.NOTIFICATION_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.VANGUARD_NAME
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.*
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.AttachmentOrder.Companion.toAttachment
@@ -9,6 +8,9 @@ import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageS
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.SECOND_ORDER_ID_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.THIRD_ORDER_ID_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Companion.toOrder
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.First
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Second
+import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderPageSet.Third
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.OrderSet.Companion.toOrderStatus
 import com.bugtsa.casher.resource.api.controllers.avangard.data.enums.StatusOrderType.Companion.toStatusOrderType
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.*
@@ -111,15 +113,24 @@ class VanguardController {
     ): ResponseEntity<String> {
         val (hours, minutes) = getHoursAndMinutes(notificationUIModel.time)
         return when {
-            hours == 1 -> {
-                ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
-            }
-            minutes == 30 -> {
-                ResponseEntity(TOKEN_ERROR, HttpStatus.OK)
-            }
-            else -> {
+            hours == 1 -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+            minutes == 30 -> ResponseEntity(TOKEN_ERROR, HttpStatus.OK)
+            else -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+        }
+    }
+
+    @PostMapping("$NOTIFICATION_NAME/orders/{orderId}")
+    fun setupOrderNotification(
+            @PathVariable orderId: Long,
+            @RequestBody notificationUIModel: OrderNotificationUIModel
+    ): ResponseEntity<String> {
+        val (_, minutes) = getHoursAndMinutes(notificationUIModel.time)
+        val idOrder = orderId.toOrder()
+        return when {
+            (idOrder is First || idOrder is Second || idOrder is Third).not() ->
                 ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
-            }
+            minutes == 30 -> ResponseEntity(TOKEN_ERROR, HttpStatus.OK)
+            else -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
         }
     }
 
