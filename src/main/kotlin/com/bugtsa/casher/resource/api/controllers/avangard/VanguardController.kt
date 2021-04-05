@@ -282,7 +282,7 @@ class VanguardController {
                 "           },\n" +
                 "           {\n" +
                 "               \"date_exec\":\"22.03.2021 \",\n" +
-                "               \"time_start_exec\":\"15:30:00\",\n" +
+                "               \"time_start_exec\":\"08:30:00\",\n" +
                 "               \"time_end_exec\":\"21:30:00\"\n" +
                 "           }\n" +
                 "       ]\n" +
