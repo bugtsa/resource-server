@@ -32,10 +32,13 @@ class VanguardController {
                     ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
                 (loginModel.login != SUCCESS_FIELD_VALUE || loginModel.password != SUCCESS_FIELD_VALUE) &&
                         loginModel.smsCode.isEmpty() ->
-                    ResponseEntity(SMS_SEND_ERROR, HttpStatus.OK)
+                    ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
                 loginModel.login == SUCCESS_FIELD_VALUE && loginModel.smsCode == SMS_CODE_SUCCESS_VALUE &&
                         loginModel.password.isEmpty() ->
                     ResponseEntity(LOGIN_USER_STRING, HttpStatus.OK)
+                loginModel.login == SUCCESS_FIELD_VALUE && loginModel.smsCode != SMS_CODE_SUCCESS_VALUE &&
+                        loginModel.password.isEmpty() ->
+                    ResponseEntity(SMS_SEND_ERROR, HttpStatus.OK)
                 else -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
             }
 
@@ -208,12 +211,12 @@ class VanguardController {
         private const val SECOND_LONG = "37.611942"
         private const val THIRD_LONG = "37.627169"
 
-        private const val FIRST_TYPE_TECH = 1235
-        private const val SECOND_TYPE_TECH = 1236
-        private const val THIRD_TYPE_TECH = 1237
-        private const val FIRST_NAME_TECH = 1266
-        private const val SECOND_NAME_TECH = 1267
-        private const val THIRD_NAME_TECH = 1268
+        private const val FIRST_FRIZ_TYPE_TECH = 1235
+        private const val SECOND_TV_TYPE_TECH = 1236
+        private const val THIRD_HOTSPOT_TYPE_TECH = 1237
+        private const val FIRST_BOSCH_NAME_TECH = 1266
+        private const val SECOND_SAM_NAME_TECH = 1267
+        private const val THIRD_HAR_NAME_TECH = 1268
 
         private const val ORDERS_STRING = "{\n" +
                 "    \"error\":\"\",\n" +
@@ -223,8 +226,8 @@ class VanguardController {
                 "                \"datatime\":\"$FIRST_DATE_TIME\",\n" +
                 "                \"num\":\"$FIRST_NUM\",\n" +
                 "                \"tel\":\"$FIRST_TEL\",\n" +
-                "                \"typetech\":$FIRST_TYPE_TECH,\n" +
-                "                \"nametech\":$FIRST_NAME_TECH,\n" +
+                "                \"typetech\":$FIRST_FRIZ_TYPE_TECH,\n" +
+                "                \"nametech\":$FIRST_BOSCH_NAME_TECH,\n" +
                 "                \"adressname\":\"$FIRST_ADDRESS_NAME\",\n" +
                 "                \"latitude\":\"$FIRST_LAT\",\n" +
                 "                \"longitude\":\"$FIRST_LONG\",\n" +
@@ -235,8 +238,8 @@ class VanguardController {
                 "                \"datatime\":\"$SECOND_DATE_TIME\",\n" +
                 "                \"num\":\"$SECOND_NUM\",\n" +
                 "                \"tel\":\"$SECOND_TEL\",\n" +
-                "                \"typetech\":$SECOND_TYPE_TECH,\n" +
-                "                \"nametech\":$SECOND_NAME_TECH,\n" +
+                "                \"typetech\":$SECOND_TV_TYPE_TECH,\n" +
+                "                \"nametech\":$SECOND_SAM_NAME_TECH,\n" +
                 "                \"adressname\":\"$SECOND_ADDRESS_NAME\",\n" +
                 "                \"latitude\":\"$SECOND_LAT\",\n" +
                 "                \"longitude\":\"$SECOND_LONG\",\n" +
@@ -247,8 +250,8 @@ class VanguardController {
                 "                \"datatime\":\"$THIRD_DATE_TIME\",\n" +
                 "                \"num\":\"$THIRD_NUM\",\n" +
                 "                \"tel\":\"$THIRD_TEL\",\n" +
-                "                \"typetech\":$THIRD_TYPE_TECH,\n" +
-                "                \"nametech\":$THIRD_NAME_TECH,\n" +
+                "                \"typetech\":$THIRD_HOTSPOT_TYPE_TECH,\n" +
+                "                \"nametech\":$THIRD_HAR_NAME_TECH,\n" +
                 "                \"adressname\":\"$THIRD_ADDRESS_NAME\",\n" +
                 "                \"latitude\":\"$THIRD_LAT\",\n" +
                 "                \"longitude\":\"$THIRD_LONG\",\n" +
@@ -265,8 +268,8 @@ class VanguardController {
                 "       \"datatime\":\"$FIRST_DATE_TIME\",\n" +
                 "       \"num\":\"$FIRST_NUM\",\n" +
                 "       \"tel\":\"$FIRST_TEL\",\n" +
-                "       \"typetech\":$FIRST_TYPE_TECH,\n" +
-                "       \"nametech\":$FIRST_NAME_TECH,\n" +
+                "       \"typetech\":$FIRST_FRIZ_TYPE_TECH,\n" +
+                "       \"nametech\":$FIRST_BOSCH_NAME_TECH,\n" +
                 "       \"adressname\":\"$FIRST_ADDRESS_NAME\",\n" +
                 "       \"latitude\":\"$FIRST_LAT\",\n" +
                 "       \"longitude\":\"$FIRST_LONG\",\n" +
@@ -296,8 +299,8 @@ class VanguardController {
                 "       \"datatime\":\"$SECOND_DATE_TIME\",\n" +
                 "       \"num\":\"$SECOND_NUM\",\n" +
                 "       \"tel\":\"$SECOND_TEL\",\n" +
-                "       \"typetech\":$SECOND_TYPE_TECH,\n" +
-                "       \"nametech\":$SECOND_NAME_TECH,\n" +
+                "       \"typetech\":$SECOND_TV_TYPE_TECH,\n" +
+                "       \"nametech\":$SECOND_SAM_NAME_TECH,\n" +
                 "       \"adressname\":\"$SECOND_ADDRESS_NAME\",\n" +
                 "       \"latitude\":\"$SECOND_LAT\",\n" +
                 "       \"longitude\":\"$SECOND_LONG\",\n" +
@@ -327,8 +330,8 @@ class VanguardController {
                 "       \"datatime\":\"$THIRD_DATE_TIME\",\n" +
                 "       \"num\":\"$THIRD_NUM\",\n" +
                 "       \"tel\":\"$THIRD_TEL\",\n" +
-                "       \"typetech\":$THIRD_TYPE_TECH,\n" +
-                "       \"nametech\":$THIRD_NAME_TECH,\n" +
+                "       \"typetech\":$THIRD_HOTSPOT_TYPE_TECH,\n" +
+                "       \"nametech\":$THIRD_HAR_NAME_TECH,\n" +
                 "       \"adressname\":\"$THIRD_ADDRESS_NAME\",\n" +
                 "       \"latitude\":\"$THIRD_LAT\",\n" +
                 "       \"longitude\":\"$THIRD_LONG\",\n" +
@@ -357,29 +360,29 @@ class VanguardController {
                 "  \"data\":{\n" +
                 "       \"typetech\":[\n" +
                 "           {\n" +
-                "               \"id_tech\":$FIRST_TYPE_TECH,\n" +
+                "               \"id_tech\":$FIRST_FRIZ_TYPE_TECH,\n" +
                 "               \"tech_specif\":\"Холодильник\"\n" +
                 "           },\n" +
                 "           {\n" +
-                "               \"id_tech\":$SECOND_TYPE_TECH,\n" +
+                "               \"id_tech\":$SECOND_TV_TYPE_TECH,\n" +
                 "               \"tech_specif\":\"Телевизор\"\n" +
                 "           },\n" +
                 "           {\n" +
-                "               \"id_tech\":$THIRD_TYPE_TECH,\n" +
+                "               \"id_tech\":$THIRD_HOTSPOT_TYPE_TECH,\n" +
                 "               \"tech_specif\":\"Чайник\"\n" +
                 "           }\n" +
                 "       ],\n" +
                 "       \"nametech\":[\n" +
                 "           {\n" +
-                "               \"id_name\":$FIRST_NAME_TECH,\n" +
+                "               \"id_name\":$FIRST_BOSCH_NAME_TECH,\n" +
                 "               \"name_specif\":\"Bosch\"\n" +
                 "           },\n" +
                 "           {\n" +
-                "               \"id_name\":$SECOND_NAME_TECH,\n" +
+                "               \"id_name\":$SECOND_SAM_NAME_TECH,\n" +
                 "               \"name_specif\":\"Samsung\"\n" +
                 "           },\n" +
                 "           {\n" +
-                "               \"id_name\":$THIRD_NAME_TECH,\n" +
+                "               \"id_name\":$THIRD_HAR_NAME_TECH,\n" +
                 "               \"name_specif\":\"Haier\"\n" +
                 "           }\n" +
                 "       ]\n" +
