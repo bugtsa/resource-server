@@ -285,7 +285,7 @@ class VanguardController {
                 "           },\n" +
                 "           {\n" +
                 "               \"date_exec\":\"22.03.2021 \",\n" +
-                "               \"time_start_exec\":\"08:30:00\",\n" +
+                "               \"time_start_exec\":\"18:30:00\",\n" +
                 "               \"time_end_exec\":\"21:30:00\"\n" +
                 "           }\n" +
                 "       ]\n" +
@@ -311,13 +311,13 @@ class VanguardController {
                 "       \"date_time_exec\":[\n" +
                 "           {\n" +
                 "               \"date_exec\":\"22.03.2021 \",\n" +
-                "               \"time_start_exec\":\"10:30:00\",\n" +
-                "               \"time_end_exec\":\"11:30:00\"\n" +
+                "               \"time_start_exec\":\"11:45:00\",\n" +
+                "               \"time_end_exec\":\"12:30:00\"\n" +
                 "           },\n" +
                 "           {\n" +
                 "               \"date_exec\":\"22.03.2021 \",\n" +
-                "               \"time_start_exec\":\"15:30:00\",\n" +
-                "               \"time_end_exec\":\"21:30:00\"\n" +
+                "               \"time_start_exec\":\"14:30:00\",\n" +
+                "               \"time_end_exec\":\"15:30:00\"\n" +
                 "           }\n" +
                 "       ]\n" +
                 "    }\n" +
@@ -342,12 +342,12 @@ class VanguardController {
                 "       \"date_time_exec\":[\n" +
                 "           {\n" +
                 "               \"date_exec\":\"22.03.2021 \",\n" +
-                "               \"time_start_exec\":\"10:30:00\",\n" +
-                "               \"time_end_exec\":\"11:30:00\"\n" +
+                "               \"time_start_exec\":\"18:30:00\",\n" +
+                "               \"time_end_exec\":\"19:30:00\"\n" +
                 "           },\n" +
                 "           {\n" +
                 "               \"date_exec\":\"22.03.2021 \",\n" +
-                "               \"time_start_exec\":\"15:30:00\",\n" +
+                "               \"time_start_exec\":\"20:30:00\",\n" +
                 "               \"time_end_exec\":\"21:30:00\"\n" +
                 "           }\n" +
                 "       ]\n" +
