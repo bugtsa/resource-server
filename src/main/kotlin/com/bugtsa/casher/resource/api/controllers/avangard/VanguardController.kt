@@ -122,6 +122,17 @@ class VanguardController {
         }
     }
 
+    @PutMapping("$NOTIFICATION_NAME")
+    fun setupToken(
+            @RequestBody token: TokenUIModel
+    ): ResponseEntity<String> {
+        return when {
+            token.token.isNotEmpty() && token.uuid.isNotEmpty() -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+            token.token.isEmpty() -> ResponseEntity(TOKEN_ERROR, HttpStatus.OK)
+            else -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+        }
+    }
+
     @PostMapping("$NOTIFICATION_NAME/orders/{orderId}")
     fun setupOrderNotification(
             @PathVariable orderId: Long,
