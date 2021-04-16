@@ -150,7 +150,7 @@ class VanguardController {
 
     companion object {
 
-        internal const val SUCCESS_FIELD_VALUE = "test"
+        internal const val SUCCESS_FIELD_VALUE = "1test23"
         internal const val SMS_CODE_SUCCESS_VALUE = "4567"
         internal const val VANGUARD_NAME = "/vanguard"
 

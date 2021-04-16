@@ -17,9 +17,9 @@ sealed class EditOrder {
                     OrderPageSet.SECOND_ORDER_ID_VALUE,
                     OrderPageSet.THIRD_ORDER_ID_VALUE ->  {
                         if (orderFull.equipment == SUCCESS_FIELD_VALUE) {
-                            Success
-                        } else {
                             Fail
+                        } else {
+                            Success
                         }
                     }
                     else -> Fail
