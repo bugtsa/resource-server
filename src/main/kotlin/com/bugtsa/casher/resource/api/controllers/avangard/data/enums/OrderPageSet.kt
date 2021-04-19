@@ -4,8 +4,6 @@ sealed class OrderPageSet(
         val orderId: Long
 ) {
 
-    object Seen : OrderPageSet(SEEN_VALUE)
-
     object Fail : OrderPageSet(FAIL_VALUE)
 
     object First : OrderPageSet(FIRST_ORDER_ID_VALUE)
@@ -25,7 +23,6 @@ sealed class OrderPageSet(
 
         fun Long.toOrder(): OrderPageSet =
                 when (this) {
-                    SEEN_VALUE -> Seen
                     FIRST_ORDER_ID_VALUE -> First
                     SECOND_ORDER_ID_VALUE -> Second
                     THIRD_ORDER_ID_VALUE -> Third
@@ -34,7 +31,6 @@ sealed class OrderPageSet(
 
         fun OrderPageSet.toId(): Long =
                 when (this) {
-                    Seen -> SEEN_VALUE
                     First -> FIRST_ORDER_ID_VALUE
                     Second -> SECOND_ORDER_ID_VALUE
                     Third -> THIRD_ORDER_ID_VALUE

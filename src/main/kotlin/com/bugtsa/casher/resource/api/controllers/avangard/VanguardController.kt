@@ -48,15 +48,22 @@ class VanguardController {
 
     @GetMapping("$ORDERS_NAME/{orderId}")
     fun processSeenOrders(@PathVariable orderId: Long): ResponseEntity<String> =
+            when (orderId) {
+                0L -> ResponseEntity(ORDERS_STRING, HttpStatus.OK)
+                else -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
+            }
+
+
+    @GetMapping("$DETAIL_ORDER_NAME/{orderId}")
+    fun getDetailOrder(@PathVariable orderId: Long): ResponseEntity<String> =
             when (orderId.toOrder()) {
-                OrderPageSet.Seen -> ResponseEntity(ORDERS_STRING, HttpStatus.OK)
-                OrderPageSet.First -> ResponseEntity(FIRST_ORDER_STRING, HttpStatus.OK)
-                OrderPageSet.Second -> ResponseEntity(SECOND_ORDER_STRING, HttpStatus.OK)
-                OrderPageSet.Third -> ResponseEntity(THIRD_ORDER_STRING, HttpStatus.OK)
+                First -> ResponseEntity(FIRST_ORDER_STRING, HttpStatus.OK)
+                Second -> ResponseEntity(SECOND_ORDER_STRING, HttpStatus.OK)
+                Third -> ResponseEntity(THIRD_ORDER_STRING, HttpStatus.OK)
                 OrderPageSet.Fail -> ResponseEntity(MINUS_ONE_STRING, HttpStatus.OK)
             }
 
-    @PostMapping("$ORDERS_NAME/{orderId}")
+    @PostMapping("$DETAIL_ORDER_NAME/{orderId}")
     fun editOrder(
             @PathVariable orderId: Long,
             @RequestBody orderFull: OrderFullUIModel
@@ -110,8 +117,8 @@ class VanguardController {
         return ResponseEntity(arrayResponse[randomPos], HttpStatus.OK)
     }
 
-    @PostMapping("$NOTIFICATION_NAME")
-    fun setupNotification(
+    @PostMapping("/notificationGeneral")
+    fun setupGeneralNotification(
             @RequestBody notificationUIModel: NotificationUIModel
     ): ResponseEntity<String> {
         val (hours, minutes) = getHoursAndMinutes(notificationUIModel.time)
@@ -133,7 +140,7 @@ class VanguardController {
         }
     }
 
-    @PostMapping("$NOTIFICATION_NAME/orders/{orderId}")
+    @PostMapping("/notificationOrder/{orderId}")
     fun setupOrderNotification(
             @PathVariable orderId: Long,
             @RequestBody notificationUIModel: OrderNotificationUIModel
@@ -150,14 +157,16 @@ class VanguardController {
 
     companion object {
 
-        internal const val SUCCESS_FIELD_VALUE = "1test23"
+        internal const val SUCCESS_FIELD_VALUE = "test"
         internal const val SMS_CODE_SUCCESS_VALUE = "4567"
+        internal const val FAILED_FIELD_VALUE = "1error23"
         internal const val VANGUARD_NAME = "/vanguard"
 
         private const val LOGIN_NAME = "/login"
 
         private const val LOGOUT_NAME = "/logout"
         private const val ORDERS_NAME = "/orders"
+        private const val DETAIL_ORDER_NAME = "detailOrder"
 
         private const val ATTACHMENT_NAME = "/attachment"
 
