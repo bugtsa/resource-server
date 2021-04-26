@@ -1,5 +1,7 @@
 package com.bugtsa.casher.resource.api.controllers.avangard.data.models
 
+import kotlinx.serialization.SerialName
+
 @kotlinx.serialization.Serializable
 data class OrderFullUIModel(
 
@@ -27,6 +29,7 @@ data class OrderFullUIModel(
 
         val longitude: String,
 
+        @SerialName("date_time_exec")
         val dateTimeExec: List<DateTimeExecUIModel>,
 
         val status: Int
