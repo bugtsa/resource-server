@@ -1,14 +1,14 @@
 package com.bugtsa.casher.resource.api.controllers.avangard.data.models
 
-import kotlinx.serialization.SerialName
+import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class DateTimeExecUIModel(
-        @SerialName("date_exec")
+        @field:JsonProperty("date_exec")
         val dateExec: String,
-        @SerialName("time_start_exec")
+        @field:JsonProperty("time_start_exec")
         val timeStartExec: String,
-        @SerialName("time_end_exec")
+        @field:JsonProperty("time_end_exec")
         val timeEndExec: String
 )

@@ -1,7 +1,6 @@
 package com.bugtsa.casher.resource.api.controllers.avangard.data.enums
 
 import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.FAILED_FIELD_VALUE
-import com.bugtsa.casher.resource.api.controllers.avangard.VanguardController.Companion.SUCCESS_FIELD_VALUE
 import com.bugtsa.casher.resource.api.controllers.avangard.data.models.OrderFullUIModel
 
 sealed class EditOrder {
