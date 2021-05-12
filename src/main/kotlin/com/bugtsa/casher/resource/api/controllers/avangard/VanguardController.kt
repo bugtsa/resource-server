@@ -538,5 +538,4 @@ class VanguardController {
                 "    ]" +
                 "}\n"
     }
-
 }
