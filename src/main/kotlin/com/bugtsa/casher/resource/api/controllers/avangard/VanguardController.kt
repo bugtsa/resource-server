@@ -73,7 +73,7 @@ class VanguardController {
                 EditOrder.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
             }
 
-    @PostMapping("$ORDERS_NAME/{orderId}/{statusType}")
+    @PostMapping("$ORDERS_NAME/status/{orderId}/{statusType}")
     fun setupStatus(
             @PathVariable orderId: Long,
             @PathVariable statusType: Int
