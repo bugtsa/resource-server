@@ -73,21 +73,21 @@ class VanguardController {
                 EditOrder.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
             }
 
-//    @PostMapping("$ORDERS_NAME/status/{orderId}/{statusType}")
-//    fun setupStatus(
-//            @PathVariable orderId: Long,
-//            @PathVariable statusType: Int
-//    ): ResponseEntity<String> =
-//            when (orderId.toOrderStatus()) {
-//                OrderSet.First, OrderSet.Second, OrderSet.Third -> {
-//                    when (statusType.toStatusOrderType()) {
-//                        StatusOrderType.Open, StatusOrderType.InWork, StatusOrderType.Cancel, StatusOrderType.Waiting,
-//                        StatusOrderType.Ready, StatusOrderType.Complete -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
-//                        StatusOrderType.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
-//                    }
-//                }
-//                OrderSet.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
-//            }
+    @PostMapping("$ORDERS_NAME/status/{orderId}/{statusType}")
+    fun setupStatus(
+            @PathVariable orderId: Long,
+            @PathVariable statusType: Int
+    ): ResponseEntity<String> =
+            when (orderId.toOrderStatus()) {
+                OrderSet.First, OrderSet.Second, OrderSet.Third -> {
+                    when (statusType.toStatusOrderType()) {
+                        StatusOrderType.Open, StatusOrderType.InWork, StatusOrderType.Cancel, StatusOrderType.Waiting,
+                        StatusOrderType.Ready, StatusOrderType.Complete -> ResponseEntity(SUCCESS_ANSWER, HttpStatus.OK)
+                        StatusOrderType.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
+                    }
+                }
+                OrderSet.Fail -> ResponseEntity(MISS_DATA, HttpStatus.OK)
+            }
 
     @GetMapping("/directory")
     fun processDirectory(): ResponseEntity<String> =
